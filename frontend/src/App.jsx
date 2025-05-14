@@ -5,7 +5,6 @@ import Register from './pages/Regiter';
 import Dashboard from './pages/Dashboard';
 import Navbar from './components/Navbar';
 import { useSelector } from 'react-redux';
-import About from './pages/about';
 import Footer from './components/Footer';
 import Balance from './pages/Balance';
 import RequestOTP from './pages/RequestOtp';
@@ -13,6 +12,7 @@ import VerifyOTP from './pages/VerifyOtp';
 import UsersList from './pages/Admin/UsersList';
 import UserDetails from './pages/Admin/UserDetails';
 import Join from './pages/Join';
+import About from './pages/About';
 import InvestmentPackages from './pages/homeHelper/InvestmentPage';
 import Profile from './pages/Admin/Profile';
 import { Toaster } from 'react-hot-toast'
