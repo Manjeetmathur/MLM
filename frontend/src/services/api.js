@@ -1,6 +1,6 @@
 import axios from 'axios';
-// const URL = "http://localhost:5555/api"
-let URL = "http://localhost:5555/api"
+const URL = "https://mlm-backend-8v8u.onrender.com"
+// let URL = "http://localhost:5555/api"
 
 const api = axios.create({
        baseURL: URL,
