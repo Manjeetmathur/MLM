@@ -100,7 +100,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="font-sans bg-gray-50 pt-20">
+    <div className="font-sans bg-gray-50 pt-10">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-indigo-700 via-blue-5=700 to-purple-700 py-20 lg:py-32 flex items-center justify-center overflow-hidden">
         <canvas
