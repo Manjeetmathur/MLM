@@ -12,7 +12,6 @@ const api = axios.create({
 });
 
 export const registerUser = async (data) => {
-       console.log(data)
        const response = await api.post('/register', data);
        return response;
 };
@@ -92,7 +91,7 @@ export const addPlan = async ({packageId,userId,image}) => {
        formData.append('image', image)
        formData.append('packageId', packageId)
        formData.append('userId', userId)
-       const response = await axios.post(`http://localhost:5555/api/upload-sst`,
+       const response = await api.post(`/upload-sst`,
               formData,
               {
                      headers : {"Content-Type" : "multipart/formdata"},

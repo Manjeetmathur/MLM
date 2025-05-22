@@ -3,136 +3,212 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../services/api';
 import { logout } from '../store/authSlice';
-import p1 from '../assets/p1.jpg'
-
+import toast from 'react-hot-toast';
+import p1 from '../assets/p1.png';
+import { IoMenu } from "react-icons/io5";
 export default function Navbar() {
-       const [isOpen, setIsOpen] = useState(false);
-       const navigate = useNavigate();
-       const dispatch = useDispatch();
-       const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-       const isAdmin = useSelector((state) => state.auth.isAdmin);
-       const user = useSelector((state) => state.auth.user);
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAdmin = useSelector((state) => state.auth.isAdmin);
+  const user = useSelector((state) => state.auth.user);
 
-       const handleLogout = async () => {
-              try {
-                     await logoutUser();
-                     dispatch(logout());
-                     navigate('/login');
-              } catch (err) {
-                     console.error('Logout failed:', err);
-                     dispatch(logout()); // Logout even if API fails for safety
-                     navigate('/login');
-              }
-              setIsOpen(false);
-       };
+  const handleLogout = async () => {
+    try {
+      setLoading(true);
+      await logoutUser();
+      dispatch(logout());
+      toast.success('Logged out successfully');
+      navigate('/login');
+    } catch (err) {
+      console.error('Logout failed:', err);
+      dispatch(logout()); // Logout even if API fails for safety
+      toast.error('Logout failed, but you have been signed out');
+      navigate('/login');
+    } finally {
+      setLoading(false);
+      setIsOpen(false);
+    }
+  };
 
-       const toggleMenu = () => {
-              setIsOpen(!isOpen);
-       };
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
-       return (
-              <nav className="fixed top-0 left-0 w-full bg-gradient-to-r from-indigo-500 to-blue-600 shadow-lg z-50">
-                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
-                            {/* Logo */}
-                            <Link
-                                   to="/"
-                                   className="text-2xl font-bold text-white hover:text-indigo-200 transition-colors duration-300"
-                            >
-                                  <img src={p1} alt="" className='w-13 rounded-2xl' />
-                            </Link>
+  return (
+    <nav className="fixed top-0 left-0 w-full bg-gradient-to-r from-indigo-500 via-purple-600 to-blue-500 shadow-xl z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+        {/* Logo */}
+        <Link to="/" className="flex items-center space-x-2 group" onClick={() => setIsOpen(false)}>
+        <h1 className="w-[100px] text-2xl font-extrabold text-white group-hover:text-yellow-300 transition-colors duration-300 drop-shadow-2xl font-serif ">
+            DreamPay
+        </h1>
+        </Link>
 
-                            {/* Hamburger Icon for Mobile */}
-                            <button
-                                   className="text-white md:hidden focus:outline-none hover:text-indigo-200 transition-colors duration-300"
-                                   onClick={toggleMenu}
-                                   aria-label="Toggle menu"
-                            >
-                                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                          <path
-                                                 strokeLinecap="round"
-                                                 strokeLinejoin="round"
-                                                 strokeWidth="2"
-                                                 d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
-                                          />
-                                   </svg>
-                            </button>
+        {/* Hamburger Icon for Mobile */}
+        <div>
+          <IoMenu 
+            className="md:hidden text-3xl text-black"
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+            disabled={loading} />
+        </div>
 
-                            {/* Navigation Links */}
-                            <div
-                                   className={`${isOpen ? 'block' : 'hidden'
-                                          } md:flex md:items-center md:space-x-6 absolute md:static top-full left-0 w-full md:w-auto bg-indigo-600 md:bg-transparent px-4 md:px-0 py-4 md:py-0 transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 md:opacity-100 md:translate-y-0'
-                                          }`}
-                            >
-                                   {isAuthenticated ? (
-                                          <>
-                                                 <Link
-                                                        to="/dashboard"
-                                                        className="block text-white hover:text-indigo-200 py-2 md:py-0 transition-colors duration-300"
-                                                        onClick={() => setIsOpen(false)}
-                                                 >
-                                                        Dashboard
-                                                 </Link>
-                                                 {!isAdmin && (
-                                                        <Link
-                                                               to={`/balance/${user._id}`}
-                                                               className="block text-white hover:text-indigo-200 py-2 md:py-0 transition-colors duration-300"
-                                                               onClick={() => setIsOpen(false)}
-                                                        >
-                                                               Balance
-                                                        </Link>
-                                                 )}
-                                                 {!isAdmin && (
-                                                        <Link
-                                                               to={`/profile/${user._id}`}
-                                                               className="block text-white hover:text-indigo-200 py-2 md:py-0 transition-colors duration-300"
-                                                               onClick={() => setIsOpen(false)}
-                                                        >
-                                                               Profile
-                                                        </Link>
-                                                 )}
-                                                 {isAdmin && (
-                                                        <Link
-                                                               to="/admin/users"
-                                                               className="block text-white hover:text-indigo-200 py-2 md:py-0 transition-colors duration-300"
-                                                               onClick={() => setIsOpen(false)}
-                                                        >
-                                                               Users
-                                                        </Link>
-                                                 )}
-                                                 <button
-                                                        onClick={handleLogout}
-                                                        className="block text-white hover:text-indigo-200 py-2 md:py-0 transition-colors duration-300 w-full text-left md:w-auto"
-                                                 >
-                                                        Logout
-                                                 </button>
-                                          </>
-                                   ) : (
-                                          <>
-                                                 <Link
-                                                        to="/login"
-                                                        className="block text-white hover:text-indigo-200 py-2 md:py-0 transition-colors duration-300"
-                                                        onClick={() => setIsOpen(false)}
-                                                 >
-                                                        Login
-                                                 </Link>
-                                                 <Link
-                                                        to="/register"
-                                                        className="block text-white hover:text-indigo-200 py-2 md:py-0 transition-colors duration-300"
-                                                        onClick={() => setIsOpen(false)}
-                                                 >
-                                                        Register
-                                                 </Link>
-                                          </>
-                                   )}
-                                   <Link
-                                          to="/about"
-                                          className="block text-white hover:text-indigo-200 py-2 md:py-0 transition-colors duration-300"
-                                          onClick={() => setIsOpen(false)}
-                                   >
-                                          About
-                                   </Link>
-                            </div>
-                     </div>
-              </nav>
-       );
+        {/* Navigation Links */}
+        <div
+          className={`${isOpen ? 'block' : 'hidden'
+            } md:flex md:items-center md:space-x-8 absolute md:static top-full left-0 w-full md:w-auto bg-indigo-700 md:bg-transparent px-4 md:px-0 py-6 md:py-0 transition-all duration-500 ease-in-out transform ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 md:opacity-100 md:translate-y-0'
+            }`}
+        >
+          {isAuthenticated ? (
+            <>
+              <Link
+                to="/dashboard"
+                className="block text-white hover:text-yellow-300 py-3 md:py-0 text-lg font-semibold transition-colors duration-300 animate-fade-in-up"
+                style={{ animationDelay: '0.1s' }}
+                onClick={() => setIsOpen(false)}
+              >
+                Dashboard
+              </Link>
+              {!isAdmin && (
+                <>
+                  <Link
+                    to={`/balance/${user?._id}`}
+                    className="block text-white hover:text-yellow-300 py-3 md:py-0 text-lg font-semibold transition-colors duration-300 animate-fade-in-up"
+                    style={{ animationDelay: '0.2s' }}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Balance
+                  </Link>
+                  <Link
+                    to={`/profile/${user?._id}`}
+                    className="block text-white hover:text-yellow-300 py-3 md:py-0 text-lg font-semibold transition-colors duration-300 animate-fade-in-up"
+                    style={{ animationDelay: '0.3s' }}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Profile
+                  </Link>
+                </>
+              )}
+              {isAdmin && (
+                <Link
+                  to="/admin/users"
+                  className="block text-white hover:text-yellow-300 py-3 md:py-0 text-lg font-semibold transition-colors duration-300 animate-fade-in-up"
+                  style={{ animationDelay: '0.4s' }}
+                  onClick={() => setIsOpen(false)}
+                >
+                  Users
+                </Link>
+              )}
+              <button
+                onClick={handleLogout}
+                className={`block text-white py-3 md:py-0 text-lg font-semibold transition-colors duration-300 w-full text-left md:w-auto flex items-center ${loading ? 'opacity-75 cursor-not-allowed' : 'hover:text-yellow-300'
+                  } animate-fade-in-up`}
+                style={{ animationDelay: '0.5s' }}
+                disabled={loading}
+              >
+                {loading ? (
+                  <span className="flex items-center">
+                    <svg
+                      className="animate-spin h-5 w-5 mr-2 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Logging out...
+                  </span>
+                ) : (
+                  'Logout'
+                )}
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="block text-white hover:text-yellow-300 py-3 md:py-0 text-lg font-semibold transition-colors duration-300 animate-fade-in-up"
+                style={{ animationDelay: '0.1s' }}
+                onClick={() => setIsOpen(false)}
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="block text-white hover:text-yellow-300 py-3 md:py-0 text-lg font-semibold transition-colors duration-300 animate-fade-in-up"
+                style={{ animationDelay: '0.2s' }}
+                onClick={() => setIsOpen(false)}
+              >
+                Register
+              </Link>
+            </>
+          )}
+          <Link
+            to="/about"
+            className="block text-white hover:text-yellow-300 py-3 md:py-0 text-lg font-semibold transition-colors duration-300 animate-fade-in-up"
+            style={{ animationDelay: isAuthenticated ? '0.6s' : '0.3s' }}
+            onClick={() => setIsOpen(false)}
+          >
+            About
+          </Link>
+        </div>
+      </div>
+
+      {/* Custom CSS for animations */}
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes pulseSlow {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.1);
+            opacity: 0.8;
+          }
+        }
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        .animate-fade-in-up {
+          animation: fadeInUp 0.5s ease-out;
+        }
+        .animate-pulse-slow {
+          animation: pulseSlow 3s ease-in-out infinite;
+        }
+        .animate-spin {
+          animation: spin 1s linear infinite;
+        }
+      `}</style>
+    </nav>
+  );
 }

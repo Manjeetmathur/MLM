@@ -106,7 +106,7 @@ const Profile = () => {
                         {new Date(payment.paymentDate).toLocaleString()}
                       </p>
                       <p className="text-sm">
-                        <span className="font-medium">Transaction ID:</span> {payment.transactionId}
+                        <span className="font-medium">Transaction ID:</span> {payment?._id?.slice(10,20)}
                       </p>
                     </div>
                   </div>

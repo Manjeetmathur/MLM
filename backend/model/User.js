@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema({
   AccountNo: { type: String, },
   AccountHolderName: { type: String, },
   ifscCode: { type: String, },
-  phoneNo: { type: String, },
+  phoneNo: { type: String,default:"" },
   kycVerified: { type: Boolean, default: false },
   otp: { type: String, },
   otpExpires: { type: Date, },
