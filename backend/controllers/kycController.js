@@ -22,7 +22,17 @@ export const requestOTP = async (req, res) => {
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
         <!-- Header -->
         <div style="background: linear-gradient(to right, #4f46e5, #7c3aed); padding: 20px; text-align: center;">
-          <img src="https://via.placeholder.com/150x50?text=Your+Logo" alt="Logo" style="max-width: 150px;" />
+         <div className="flex items-center space-x-2  rounded-lg shadow-"> 
+                     <img src="https://i.postimg.cc/3J0QKbRh/IMG-20250524-020910.png" alt="" className='w-[40px]  text-2xl rounded-lg ' style=" width:70px; padding: 5px; text-align: center;" />
+                     <h1>
+                       Dream
+                       <span style="colour:yellow">
+                         Pay
+                       </span>
+                     </h1>
+         
+                   </div>
+         
         </div>
         <!-- Body -->
         <div style="padding: 30px; background-color: #ffffff;">
@@ -82,7 +92,17 @@ export const verifyOTP = async (req, res) => {
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
         <!-- Header -->
         <div style="background: linear-gradient(to right, #4f46e5, #7c3aed); padding: 20px; text-align: center;">
-          <img src="https://via.placeholder.com/150x50?text=Your+Logo" alt="Logo" style="max-width: 150px;" />
+            <div className="flex items-center space-x-2  rounded-lg shadow-"> 
+                     <img src="https://i.postimg.cc/3J0QKbRh/IMG-20250524-020910.png" alt="" className='w-[40px]  text-2xl rounded-lg ' style=" width:70px; padding: 5px; text-align: center;" />
+                     <h1>
+                       Dream
+                       <span style="colour:yellow">
+                         Pay
+                       </span>
+                     </h1>
+         
+                   </div>
+         
         </div>
         <!-- Body -->
         <div style="padding: 30px; background-color: #ffffff;">
@@ -90,7 +110,7 @@ export const verifyOTP = async (req, res) => {
             Congratulations! KYC Verified 🎉
           </h2>
           <div style="text-align: center; margin-bottom: 20px;">
-            <img src="https://via.placeholder.com/80x80?text=✓" alt="Checkmark" style="width: 80px; height: 80px;" />
+            <img src="https://i.postimg.cc/TYtChnkc/verified-badge-medal-label-green-white-with-checkmark-symbol-469478-94.png" alt="Checkmark" style="width: 80px; height: 80px; " />
           </div>
           <p style="color: #4b5563; font-size: 16px; line-height: 1.5;">
             Hello ${user.name || 'Valued Customer'},<br/><br/>

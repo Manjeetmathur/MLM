@@ -6,9 +6,9 @@ import toast from 'react-hot-toast';
 import InvestmentPackages from './homeHelper/InvestmentPage';
 import D1 from './DeshBoardHelper/D1';
 import D2 from './DeshBoardHelper/D2';
+import F1 from './homeHelper/F1';
 
 export default function Dashboard() {
-  // Scroll to top on route 
   const location = useLocation();
   
   useEffect(() => {
@@ -24,7 +24,6 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
-
 
   const getUserProfile = async () => {
     try {
@@ -44,7 +43,7 @@ export default function Dashboard() {
       setLoading(true);
       const response = await getReferrals();
       setReferrals(response.data);
-      setBalance(response.data?.balance || 1500.75); // Replace with real API data
+      setBalance(response.data?.balance || 1500.75);
       setLevel(calculateLevel(response.data?.referrals?.length || 0));
       setProgress(calculateProgress(response.data?.referrals?.length || 0));
     } catch (err) {
@@ -93,17 +92,18 @@ export default function Dashboard() {
     if (referralCount >= 5) return 60;
     return Math.min(referralCount * 10, 100);
   };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br mt-10 from-gray-50 to-indigo-50 py-16 px-4 sm:px-8 lg:px-12 relative overflow-hidden">
+    <div className="min-h-screen bg-gray-900 mt-16 py-16 px-4 sm:px-8 lg:px-12 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-indigo-100 rounded-full opacity-20 blur-3xl animate-pulse-slow"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-100 rounded-full opacity-20 blur-3xl animate-pulse-slow"></div>
+        <div className="absolute top-0 left-0 w-96 h-96 bg-indigo-900 rounded-full opacity-20 blur-3xl animate-pulse-slow"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-900 rounded-full opacity-20 blur-3xl animate-pulse-slow"></div>
         {/* Particle Effects */}
         {[...Array(15)].map((_, i) => (
           <div
             key={`particle-${i}`}
-            className="particle absolute rounded-full bg-indigo-300 opacity-20"
+            className="particle absolute rounded-full bg-indigo-400 opacity-30"
             style={{
               width: `${Math.random() * 3 + 2}px`,
               height: `${Math.random() * 3 + 2}px`,
@@ -121,7 +121,7 @@ export default function Dashboard() {
           <div className="flex justify-center items-center min-h-[50vh]">
             <div className="flex items-center space-x-3 animate-fade-in-up">
               <svg
-                className="animate-spin h-10 w-10 text-indigo-600"
+                className="animate-spin h-10 w-10 text-indigo-400"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -140,13 +140,16 @@ export default function Dashboard() {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              <p className="text-2xl font-medium text-gray-700">Loading Dashboard...</p>
+              <p className="text-2xl font-medium text-gray-300">Loading Dashboard...</p>
             </div>
           </div>
         ) : (
           <>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center text-gray-800 mb-16 animate-fade-in-down">
-              Welcome, {profile?.name || 'User'}!
+            <h1
+              className="text-4xl sm:text-5xl md:text-6xl font-bold text-center text-white mb-16 animate-fade-in-down"
+              data-aos="fade-down"
+            >
+              🙏Welcome, {profile?.name || 'User'}!
             </h1>
 
             {/* Overview Section */}
@@ -155,8 +158,13 @@ export default function Dashboard() {
             {/* Referrals and Transactions */}
             <div className="space-y-16 my-16">
               {/* Your Plans */}
-              <div className="bg-white rounded-3xl shadow-lg p-8 transform hover:shadow-xl transition-all duration-300 animate-fade-in-up">
-                <h2 className="text-3xl md:text-4xl font-semibold text-gray-800 mb-8 text-center">
+              <div
+                className="bg-gray-800 rounded-3xl shadow-lg p-8 transform hover:shadow-xl 
+                hover:shadow-indigo-500/30 transition-all duration-300 animate-fade-in-up"
+                data-aos="fade-up"
+                data-aos-delay="100"
+              >
+                <h2 className="text-3xl md:text-4xl font-semibold text-white mb-8 text-center">
                   Your Plans
                 </h2>
                 {user?.plans?.length ? (
@@ -164,19 +172,23 @@ export default function Dashboard() {
                     {user.plans.map((item, idx) => (
                       <div
                         key={idx}
-                        className="border border-gray-100 rounded-2xl p-6 bg-gray-50 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 flex flex-col items-center"
+                        className="border border-gray-600 rounded-2xl p-6 bg-gray-700 shadow-sm 
+                        hover:shadow-md transition-all duration-300 transform hover:- wanneer translate-y-1 flex flex-col items-center"
                       >
-                        <p className="text-lg font-medium text-gray-700 mb-2">
+                        <p className="text-lg font-medium text-gray-300 mb-2">
                           Package Amount:{' '}
-                          <span className="text-indigo-600 font-bold">₹{item?.packageAmount?.toLocaleString()}</span>
+                          <span className="text-indigo-400 font-bold">₹{item?.packageAmount?.toLocaleString()}</span>
                         </p>
-                        <p className="text-lg font-medium text-gray-700 mb-4">
+                        <p className="text-lg font-medium text-gray-300 mb-4">
                           Daily Income:{' '}
-                          <span className="text-green-600 font-bold">₹{item?.dailyIncome?.toLocaleString()}</span>
+                          <span className="text-green-400 font-bold">₹{item?.dailyIncome?.toLocaleString()}</span>
                         </p>
                         <Link
                           to={`/plans/${idx}`}
-                          className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-sm hover:shadow-md focus:outline-none focus:ring-4 focus:ring-indigo-300 focus:ring-offset-2"
+                          className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 
+                          rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 
+                          font-medium shadow-sm hover:shadow-md focus:outline-none focus:ring-4 
+                          focus:ring-indigo-400 focus:ring-offset-2"
                         >
                           See Details
                         </Link>
@@ -184,9 +196,9 @@ export default function Dashboard() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-600 text-center text-lg">
+                  <p className="text-gray-400 text-center text-lg">
                     No plans yet. Explore our{' '}
-                    <Link to="/#packages" className="text-indigo-600 hover:underline font-medium">
+                    <Link to="/#packages" className="text-indigo-400 hover:underline font-medium">
                       investment packages
                     </Link>
                     !
@@ -195,33 +207,49 @@ export default function Dashboard() {
               </div>
 
               {/* Referrals */}
-              <div className="bg-white rounded-3xl shadow-lg p-8 transform hover:shadow-xl transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                <h2 className="text-3xl md:text-4xl font-semibold text-gray-800 mb-8 text-center">
+              <div
+                className="bg-gray-800 rounded-3xl shadow-lg p-8 transform hover:shadow-xl 
+                hover:shadow-indigo-500/30 transition-all duration-300 animate-fade-in-up"
+                style={{ animationDelay: '0.2s' }}
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <h2 className="text-3xl md:text-4xl font-semibold text-white mb-8 text-center">
                   Your Referrals
                 </h2>
                 {referrals?.referrals?.length > 0 ? (
-                  <ul className="space-y-4 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-200 scrollbar-track-gray-50 pr-2">
+                  <ul className="space-y-4 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-600 scrollbar-track-gray-700 pr-2">
                     {referrals.referrals.map((ref, idx) => (
                       <li
                         key={ref._id}
-                        className="flex justify-between items-center border-b border-gray-100 py-4 text-gray-700 hover:bg-gray-50 transition-colors duration-300 rounded-lg px-2 animate-fade-in-up"
+                        className="flex justify-between items-center border-b border-gray-600 py-4 
+                        text-gray-300 hover:bg-gray-700 transition-colors duration-300 rounded-lg px-2 
+                        animate-fade-in-up"
                         style={{ animationDelay: `${0.1 * idx}s` }}
                       >
-                        <span className="font-medium text-lg text-gray-800">{ref.name}</span>
-                        <span className="text-sm text-gray-500 font-mono bg-gray-100 px-2 py-1 rounded">{ref._id.slice(-6)}</span>
+                        <span className="font-medium text-lg text-white">{ref.name}</span>
+                        <span className="text-sm text-gray-400 font-mono bg-gray-600 px-2 py-1 rounded">
+                          {ref._id.slice(-6)}
+                        </span>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-gray-600 text-center text-lg">
+                  <p className="text-gray-400 text-center text-lg">
                     No referrals yet. Invite friends to earn bonuses!
                   </p>
                 )}
               </div>
 
               {/* Recent Transactions */}
-              <div className="bg-white rounded-3xl shadow-lg p-8 transform hover:shadow-xl transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-                <h2 className="text-3xl md:text-4xl font-semibold text-gray-800 mb-8 text-center">
+              <div
+                className="bg-gray-800 rounded-3xl shadow-lg p-8 transform hover:shadow-xl 
+                hover:shadow-indigo-500/30 transition-all duration-300 animate-fade-in-up"
+                style={{ animationDelay: '0.4s' }}
+                data-aos="fade-up"
+                data-aos-delay="300"
+              >
+                <h2 className="text-3xl md:text-4xl font-semibold text-white mb-8 text-center">
                   Recent Transactions
                 </h2>
                 {user?.paymentScreenshots?.length || user?.withdrawMoney?.length ? (
@@ -234,7 +262,7 @@ export default function Dashboard() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-600 text-center text-lg">
+                  <p className="text-gray-400 text-center text-lg">
                     No recent transactions yet.
                   </p>
                 )}
@@ -242,8 +270,13 @@ export default function Dashboard() {
             </div>
 
             {/* Investment Packages */}
-            <div className="my-16 rounded-3xl animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-              <InvestmentPackages />
+            <div
+              className="my-16 rounded-3xl animate-fade-in-up"
+              style={{ animationDelay: '0.6s' }}
+              data-aos="fade-up"
+              data-aos-delay="400"
+            >
+              <F1 />
             </div>
           </>
         )}
@@ -281,25 +314,17 @@ export default function Dashboard() {
             opacity: 0.3;
           }
         }
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
         @keyframes float {
           0% {
             transform: translateY(0) translateX(0);
-            opacity: 0.2;
+            opacity: 0.3;
           }
           50% {
-            opacity: 0.4;
+            opacity: 0.5;
           }
           100% {
             transform: translateY(-100vh) translateX(${Math.random() * 30 - 15}px);
-            opacity: 0.1;
+            opacity: 0.2;
           }
         }
         .animate-fade-in-down {
@@ -311,23 +336,19 @@ export default function Dashboard() {
         .animate-pulse-slow {
           animation: pulseSlow 8s ease-in-out infinite;
         }
-        .animate-spin {
-          animation: spin 1s linear infinite;
-        }
         .scrollbar-thin {
           scrollbar-width: thin;
         }
-        .scrollbar-thumb-indigo-200 {
-          scrollbar-color: #c7d2fe #f3f4f6;
+        .scrollbar-thumb-indigo-600 {
+          scrollbar-color: #4f46e5 #1f2937;
         }
-        .scrollbar-track-gray-50 {
-          scrollbar-color: #c7d2fe #f3f4f6;
+        .scrollbar-track-gray-700 {
+          scrollbar-color: #4f46e5 #1f2937;
         }
         .particle {
           animation: float linear infinite;
           pointer-events: none;
         }
-        /* Ensure proper font rendering */
         body {
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }

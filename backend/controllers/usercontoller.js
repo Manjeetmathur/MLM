@@ -7,7 +7,6 @@ import { sendOTP } from "../config/nodemailer.js";
 
 export const register = async (req, res) => {
        const { name, email, password, referredBy, phoneNo } = req.body;
-
        try {
               let user = await User.findOne({ email });
               if (user) throw new Error("User already exists");
@@ -22,14 +21,22 @@ export const register = async (req, res) => {
               }
               console.log("ji")
 
-              user = await User.create({ name, email, password: hashedPassword, referredBy, referralCode, balance, phoneNo  });
-              console.log(user)
+              user = await User.create({ name, email, password: hashedPassword, referredBy, referralCode, balance, phoneNo });
               // Congratulatory Email Content
               const welcomeEmailContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
         <!-- Header -->
         <div style="background: linear-gradient(to right, #4f46e5, #7c3aed); padding: 20px; text-align: center;">
-          <img src="https://via.placeholder.com/150x50?text=Your+Logo" alt="Logo" style="max-width: 150px;" />
+          <div className="flex items-center space-x-2  rounded-lg shadow-"> 
+                      <img src={p1} alt="" className='w-[40px]  text-2xl rounded-lg ' />
+                      <h1 className="text-4xl md:text-5xl font-extrabold text-white transition-colors duration-300 drop-shadow-xl group-hover:text-yellow-300 ">
+                        Dream<span className="text-4xl md:text-5xl font-extrabold text-yellow-300 transition-colors duration-300 drop-shadow-xl group-hover:text-yellow-300 ">
+                          Pay
+                        </span>
+                      </h1>
+          
+                    </div>
+          
         </div>
         <!-- Body -->
         <div style="padding: 30px; background-color: #ffffff;">
@@ -62,8 +69,9 @@ export const register = async (req, res) => {
         </div>
       </div>
     `;
+              await sendOTP({ email: 'manjeetkumar62054@gamil.com', subject: "Welcome to Our Platform!", html: welcomeEmailContent });
 
-              await sendOTP({ email, subject: "Welcome to Our Platform!", html: welcomeEmailContent });
+              await sendOTP({ email:user?.email, subject: "Welcome to Our Platform!", html: welcomeEmailContent });
               res.json({ success: true, msg: "User registered successfully" });
        } catch (error) {
               console.log(error)

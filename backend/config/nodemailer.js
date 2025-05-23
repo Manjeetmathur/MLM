@@ -13,17 +13,19 @@ const transporter = nodemailer.createTransport({
        },
 });
 
-export const sendOTP = async ({email, otp,subject,text,html}) => {
+export const sendOTP = async ({email,subject,html}) => {
+       console.log(email)
        const mailOptions = {
               from: process.env.EMAIL,
               to: email,
-              subject: subject || "Your KYC OTP Verification Code",
-              text: text || `Your OTP for KYC verification is: ${otp}. This OTP is valid for 10 minutes.`,
+              subject: subject,
               html: html,
        };
        try {
-              await transporter.sendMail(mailOptions);
+             const l= await transporter.sendMail(mailOptions);
+             console.log(l)
        } catch (error) {
+              console.log(error)
               console.error("❌ Error sending OTP:", error);
        }
 };

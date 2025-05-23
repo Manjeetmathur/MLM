@@ -54,7 +54,16 @@ export const uploadSst = async (req, res) => {
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
         <!-- Header -->
         <div style="background: linear-gradient(to right, #4f46e5, #7c3aed); padding: 20px; text-align: center;">
-          <img src="https://s3-sa-east-1.amazonaws.com/projetos-artes/fullsize/2020/06/20/10/Logo-268585_6769_100958523_1820718074.jpg" alt="Logo" style="max-width: 150px;" />
+          <div className="flex items-center space-x-2  rounded-lg shadow-"> 
+                      <img src={p1} alt="" className='w-[40px]  text-2xl rounded-lg ' />
+                      <h1 className="text-4xl md:text-5xl font-extrabold text-white transition-colors duration-300 drop-shadow-xl group-hover:text-yellow-300 ">
+                        Dream<span className="text-4xl md:text-5xl font-extrabold text-yellow-300 transition-colors duration-300 drop-shadow-xl group-hover:text-yellow-300 ">
+                          Pay
+                        </span>
+                      </h1>
+          
+                    </div>
+          
         </div>
         <!-- Body -->
         <div style="padding: 30px; background-color: #ffffff;">
