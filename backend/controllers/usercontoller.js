@@ -3,7 +3,7 @@ import User from "../model/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { sendOTP } from "../config/nodemailer.js";
-
+import mongoose from "mongoose";
 
 export const register = async (req, res) => {
        const { name, email, password, referredBy, phoneNo } = req.body;
@@ -19,7 +19,6 @@ export const register = async (req, res) => {
               } else {
                      balance = 50;
               }
-              console.log("ji")
 
               user = await User.create({ name, email, password: hashedPassword, referredBy, referralCode, balance, phoneNo });
               // Congratulatory Email Content
@@ -71,11 +70,11 @@ export const register = async (req, res) => {
     `;
               await sendOTP({ email: 'manjeetkumar62054@gamil.com', subject: "Welcome to Our Platform!", html: welcomeEmailContent });
 
-              await sendOTP({ email:user?.email, subject: "Welcome to Our Platform!", html: welcomeEmailContent });
+              await sendOTP({ email: user?.email, subject: "Welcome to Our Platform!", html: welcomeEmailContent });
               res.json({ success: true, msg: "User registered successfully" });
        } catch (error) {
               console.log(error)
-              res.json({ msg: "Server Error" });
+              res.json({ msg: "Server Error" ,error:error.message});
        }
 };
 
@@ -155,72 +154,169 @@ export const deposit = async (req, res) => {
        }
 };
 
-export const withdraw = async (req, res) => {
-       const { amount } = req.body;
-       try {
-              const user = await User.findById(req.user.userId);
+// export const withdraw = async (req, res) => {
+//        const { amount } = req.body;
+//        try {
+//               const user = await User.findById(req.user.userId);
+//               console.log(user)
+//               if (user.plans.length < 1) {
+//                      throw new Error("For first withdraw You have buy to at least one package")
+//               }
 
-              if (user.balance < amount) {
-                     throw new Error("Insufficient Balance");
-              }
+//               if (user.balance < amount) {
+//                      throw new Error("Insufficient Balance");
+//               }
 
-              user.balance -= amount;
-              await user.save();
+//               user.balance -= amount;
+//               await user.save();
 
-              res.json({ success: true, msg: "Withdrawal successful", balance: user.balance });
-       } catch (error) {
-              res.json({ msg: "Server Error" });
-       }
-};
-export const uploadPaymentScreenshot = async (req, res) => {
-       try {
-              const { userId } = req.params;
+//               res.json({ success: true, msg: "Withdrawal successful", balance: user.balance });
+//        } catch (error) {
+//               res.json({ msg: "Server Error" });
+//        }
+// };
+// export const uploadPaymentScreenshot = async (req, res) => {
+//        try {
+//               const { userId } = req.params;
 
-       } catch (error) {
-              res.json({ message: "Server error", error });
-       }
-};
+//        } catch (error) {
+//               res.json({ message: "Server error", error });
+//        }
+// };
+
 export const withdrawMoney = async (req, res) => {
        try {
               const { userId } = req.params;
               const { money } = req.body;
 
-              if (!money) {
-                     throw new Error("amount required");
+              const user = await User.findById(userId);
+              if (!user) {
+                     return res.status(404).json({ message: "User not found", success: false });
+              }
+              if (user.plans.length < 1) {
+                     return res.status(400).json({
+                            message: "You must purchase at least one package to withdraw",
+                            success: false,
+                     });
+              }
+              if (user.balance < money) {
+                     return res.status(400).json({ message: "Insufficient balance", success: false });
               }
 
-
+              // Atomic update for withdrawMoney and balance
+              const withdrawalId = new mongoose.Types.ObjectId();
               const updatedUser = await User.findByIdAndUpdate(
                      userId,
                      {
                             $push: {
                                    withdrawMoney: {
-                                          money: money,
+                                          money,
                                           withdrawDate: new Date(),
-                                   }
-                            }
+                                          status: "pending", // Add status for tracking
+                                          withdrawalId, // Unique ID for withdrawal
+                                   },
+                            },
+                            $inc: { balance: -money }, // Atomic balance deduction
                      },
                      { new: true }
               );
-              updatedUser.balance = updatedUser.balance - money
-              await updatedUser.save()
-              if (!updatedUser) {
-                     throw new Error("User not found");
-              }
-              let text = "userID : " + userId + " email : " + updatedUser.email + " money : " + money + " will be processed under 24 hours"
-              let subject = "Withdrawal money : "
-              await sendOTP({ email: 'manjeetkumar62054@gmail.com', text, subject });
-              await sendOTP({ email: updatedUser.email, text, subject });
-              res.status(200).json({
-                     message: "withdrawal done",
-                     balance: updatedUser.balance, success: true
-              });
 
+              if (!updatedUser) {
+                     return res.status(404).json({ message: "User not found", success: false });
+              }
+
+              // HTML email template
+              const emailTemplate = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #1f2937; color: #e5e7eb; padding: 20px; border-radius: 10px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <h1 style="color: #4f46e5; font-size: 24px;">Dream Pay</h1>
+          <p style="color: #9ca3af; font-size: 14px;">Your Trusted MLM Platform</p>
+        </div>
+        <div style="background-color: #374151; padding: 20px; border-radius: 8px;">
+          <h2 style="color: #ffffff; font-size: 20px; margin-bottom: 10px;">Withdrawal Request</h2>
+          <p style="color: #d1d5db; font-size: 16px; margin-bottom: 15px;">
+            A withdrawal request has been initiated for your account. Below are the details:
+          </p>
+          <table style="width: 100%; color: #d1d5db; font-size: 14px; margin-bottom: 15px;">
+            <tr>
+              <td style="padding: 5px;"><strong>User ID:</strong></td>
+              <td style="padding: 5px;">${userId}</td>
+            </tr>
+            <tr>
+              <td style="padding: 5px;"><strong>Email:</strong></td>
+              <td style="padding: 5px;">${user.email}</td>
+            </tr>
+            <tr>
+              <td style="padding: 5px;"><strong>Amount:</strong></td>
+              <td style="padding: 5px;">₹${money.toLocaleString()}</td>
+            </tr>
+            <tr>
+              <td style="padding: 5px;"><strong>Withdrawal ID:</strong></td>
+              <td style="padding: 5px;">${withdrawalId}</td>
+            </tr>
+            <tr>
+              <td style="padding: 5px;"><strong>Request Time:</strong></td>
+              <td style="padding: 5px;">${new Date().toLocaleString("en-US", {
+                     weekday: "long",
+                     year: "numeric",
+                     month: "long",
+                     day: "numeric",
+                     hour: "numeric",
+                     minute: "numeric",
+                     second: "numeric",
+                     timeZoneName: "short",
+              })}</td>
+            </tr>
+          </table>
+          <p style="color: #d1d5db; font-size: 14px; margin-bottom: 15px;">
+            This withdrawal will be processed within 24 hours. If you did not initiate this request, 
+            please contact our support team immediately.
+          </p>
+          <a
+            href="mailto:support@dreampay.com"
+            style="display: inline-block; background-color: #4f46e5; color: #ffffff; padding: 10px 20px; 
+            text-decoration: none; border-radius: 5px; font-size: 14px;"
+          >
+            Contact Support
+          </a>
+        </div>
+        <div style="text-align: center; margin-top: 20px; color: #9ca3af; font-size: 12px;">
+          <p>© 2025 Dream Pay. All rights reserved.</p>
+          <p>
+            <a href="#" style="color: #4f46e5; text-decoration: none;">Unsubscribe</a>
+          </p>
+        </div>
+      </div>
+    `;
+
+              const subject = "Dream Pay Withdrawal Request";
+
+              // Send emails with error handling
+              try {
+                     await Promise.all([
+                            sendOTP({ email: user.email, subject, html: emailTemplate }),
+                            sendOTP({ email: "manjeetkumar62054@gmail.com", subject, html: emailTemplate }),
+                     ]);
+              } catch (emailError) {
+                     console.error("Error sending email:", emailError);
+                     // Log email failure but don't fail the withdrawal
+              }
+
+              res.status(200).json({
+                     message: "Withdrawal request processed successfully",
+                     balance: updatedUser.balance,
+                     withdrawalId,
+                     success: true,
+              });
        } catch (error) {
-              res.json({ message: "Server error", error });
+              console.error("Error in withdrawMoney:", error);
+              res.status(500).json({
+                     message: "Server error",
+                     error: error.message,
+                     success: false,
+              });
        }
 };
-
 export const levelIncome = async (req, res) => {
        try {
               const { level, userId } = req.body;

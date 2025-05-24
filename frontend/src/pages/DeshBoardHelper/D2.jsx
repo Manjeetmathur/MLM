@@ -10,10 +10,18 @@ const D2 = ({ profile, level, progress, referrals }) => {
     referralLink.split('').reverse().join('').slice(9).split('').reverse().join('') + 'register';
 
   const openWhatsapp = () => {
-    const message = `${referralLink}\nReferral Code: ${profile.referralCode}\nUse this referral code while registering`;
+    const message = `🌟 *Join the Dream Pay Revolution!* 🌟\n\n` +
+      `Unlock *passive income* with Dream Pay! 💰\n\n` +
+      `*Your Referral Link*: ${referralLink}\n` +
+      `*Referral Code*: *${profile.referralCode}*\n\n` +
+      `🎉 *Bonuses Await!* 🎉\n` +
+      `- Get ₹50 just for signing up!\n` +
+      `- Earn an extra ₹50 by using my referral code!\n\n` +
+      `---\n` +
+      `*Sign up now* and start earning today! ➡️\n` +
+      `Use the link and code above when registering.`;
     window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
   };
-
   const copyReferralCode = () => {
     navigator.clipboard.writeText(profile?.referralCode || '');
     toast.success('Referral code copied to clipboard!');
@@ -96,7 +104,7 @@ const D2 = ({ profile, level, progress, referrals }) => {
             <span className="text-indigo-400">📊</span> Transactions
           </h2>
           <Link
-            to="/balance"
+            to={`/balance/${profile?._id}`}
             className="inline-block bg-gradient-to-r from-indigo-800 to-purple-800 text-white 
             px-5 py-2 rounded-full hover:from-indigo-900 hover:to-purple-900 transition-all 
             duration-300 font-medium shadow-sm hover:shadow-md focus:outline-none focus:ring-4 

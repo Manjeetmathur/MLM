@@ -1,95 +1,116 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { verifyKYCOTP } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { verifyKYCOTP } from '../services/api';
 import toast from 'react-hot-toast';
 
 const VerifyOTP = () => {
-       const [otp, setOtp] = useState('');
-       const [error, setError] = useState('');
-       const [success, setSuccess] = useState('');
-       const navigate = useNavigate();
-       const location = useLocation();
-       const email = location.state?.email || ''; // Get email from state (passed from RequestOTP)
-       const user= useSelector((state) => state.auth.user);
+  const [otp, setOtp] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
+  const email = user?.email || '';
 
-       const handleSubmit = async (e) => {
-              e.preventDefault();
-              setError('');
-              setSuccess('');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
 
-              if (!otp) {
-                     setError('Please enter the OTP');
-                     return;
-              }
+    if (!otp) {
+      setError('Please enter the OTP');
+      toast.error('Please enter the OTP');
+      return;
+    }
 
-              // Validate OTP (6 digits)
-              const otpRegex = /^\d{6}$/;
-              if (!otpRegex.test(otp)) {
-                     setError('OTP must be a 6-digit number');
-                     return;
-              }
+    if (!/^\d{6}$/.test(otp)) {
+      setError('OTP must be a 6-digit number');
+      toast.error('OTP must be a 6-digit number');
+      return;
+    }
 
-              try {
-                     // Placeholder for API call to verify OTP
-                     const response = await verifyKYCOTP({email:user.email, otp});
-                     setSuccess(response.message);
-                     navigate('/dashboard');
+    if (!email) {
+      setError('Email not found. Please request OTP again.');
+      toast.error('Email not found');
+      navigate('/request-otp');
+      return;
+    }
 
-                     // Mock success response
-                     setSuccess('OTP verified successfully');
-                     toast.success("Congratulation Account verification successfully")
-                     setTimeout(() => {
-                            alert("KYC Verified")
-                            navigate('/dashboard');
-                     }, 1500);
-              } catch (err) {
-                     setError(err.message || 'OTP verification failed');
-              }
-       };
+    try {
+      setLoading(true);
+      const response = await verifyKYCOTP({ email, otp });
+      if (response.data.success) {
+        setSuccess(response.data.message);
+        toast.success('KYC verified successfully');
+        navigate('/dashboard');
+      } else {
+        throw new Error(response.data.message || 'OTP verification failed');
+      }
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || 'OTP verification failed';
+      setError(errorMsg);
+      toast.error(errorMsg);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-       return (
-              <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-300 py-12">
-                     <div className="max-w-md w-full mx-auto p-8 bg-white rounded-xl shadow-lg" data-aos="fade-up">
-                            <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-                                   Verify OTP
-                            </h2>
-                            {error && (
-                                   <p className="text-red-500 text-center mb-4 bg-red-50 p-2 rounded-lg">{error}</p>
-                            )}
-                            {success && (
-                                   <p className="text-green-500 text-center mb-4 bg-green-50 p-2 rounded-lg">
-                                          {success}
-                                   </p>
-                            )}
-                            <form onSubmit={handleSubmit}>
-                                   {/* OTP Input */}
-                                   <div className="mb-6">
-                                          <label htmlFor="otp" className="block text-sm font-medium text-gray-700 mb-1">
-                                                 Enter OTP
-                                          </label>
-                                          <input
-                                                 type="text"
-                                                 id="otp"
-                                                 placeholder="Enter the 6-digit OTP"
-                                                 value={otp}
-                                                 onChange={(e) => setOtp(e.target.value)}
-                                                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                                 required
-                                          />
-                                   </div>
-
-                                   {/* Verify OTP Button */}
-                                   <button
-                                          type="submit"
-                                          className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 font-semibold"
-                                   >
-                                          Verify OTP
-                                   </button>
-                            </form>
-                     </div>
-              </div>
-       );
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6">
+      <div className="max-w-md w-full bg-gray-800 rounded-xl shadow-lg p-8 border border-indigo-600/50" data-aos="fade-up">
+        <h2 className="text-2xl font-bold text-white text-center mb-6">Verify OTP</h2>
+        {error && (
+          <p className="text-red-400 text-sm text-center mb-4 bg-red-600/20 p-2 rounded">{error}</p>
+        )}
+        {success && (
+          <p className="text-green-400 text-sm text-center mb-4 bg-green-600/20 p-2 rounded">{success}</p>
+        )}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label htmlFor="otp" className="block text-sm text-gray-300 mb-1">
+              Enter OTP
+            </label>
+            <input
+              type="text"
+              id="otp"
+              placeholder="e.g., 123456"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="w-full p-3 bg-gray-700 text-gray-200 rounded border border-gray-600 focus:ring-indigo-400 focus:border-indigo-400 transition"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full flex justify-center items-center bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-3 rounded hover:from-indigo-700 hover:to-purple-700 transition ${loading ? 'opacity-75 cursor-not-allowed' : ''}`}
+          >
+            {loading ? (
+              <span className="flex items-center">
+                <svg
+                  className="animate-spin h-5 w-5 mr-2 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+                Verifying...
+              </span>
+            ) : (
+              'Verify OTP'
+            )}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default VerifyOTP;

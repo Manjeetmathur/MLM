@@ -38,9 +38,15 @@ export default function Login() {
       }
       const response = await loginUser(formData);
       if (response.data.success) {
+
         dispatch(login(response.data || 'authenticated'));
         await getUserProfile();
-        navigate('/dashboard');
+        if (response?.data?.admin) {
+          navigate("/admin/users")
+        } else {
+          navigate('/dashboard');
+
+        }
         toast.success('Login successful!');
       } else {
         throw new Error('Unauthorized access. Please check your credentials.');
@@ -48,8 +54,8 @@ export default function Login() {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          err.message ||
-          'Login failed. Please check your connection.'
+        err.message ||
+        'Login failed. Please check your connection.'
       );
       toast.error(err.message || 'Login failed');
     } finally {
@@ -143,12 +149,11 @@ export default function Login() {
                 }
                 className={`w-full p-4 border rounded-lg focus:outline-none focus:ring-2 
                 focus:ring-indigo-400 focus:border-transparent transition-all duration-200 
-                bg-gray-700 text-gray-200 placeholder-gray-400 hover:bg-gray-600 ${
-                  formData.email &&
-                  !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+                bg-gray-700 text-gray-200 placeholder-gray-400 hover:bg-gray-600 ${formData.email &&
+                    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
                     ? 'border-red-500'
                     : 'border-gray-600'
-                }`}
+                  }`}
                 required
                 disabled={loading}
               />
@@ -244,11 +249,10 @@ export default function Login() {
               p-4 rounded-full focus:outline-none focus:ring-4 focus:ring-indigo-400 
               focus:ring-offset-2 transition-all duration-300 font-semibold shadow-md 
               hover:shadow-lg transform hover:-translate-y-1 flex items-center justify-center 
-              ${
-                loading
+              ${loading
                   ? 'opacity-75 cursor-not-allowed'
                   : 'hover:from-indigo-700 hover:to-purple-700'
-              }`}
+                }`}
               disabled={loading}
             >
               {loading ? (

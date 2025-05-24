@@ -4,7 +4,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import { getUserById, withdrawMoney } from '../services/api';
 import toast from 'react-hot-toast';
 
-const Balance = () => {
+const Balance = ({userId}) => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [money, setMoney] = useState('');
@@ -13,12 +13,13 @@ const Balance = () => {
   const [requestLoading, setRequestLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [confirmWithdrawal, setConfirmWithdrawal] = useState(false);
-  const { id } = useParams();
+  let { id } = useParams();
 
   const fetchUser = async () => {
     try {
       setLoading(true);
-      const result = await getUserById({ id });
+      id= id?id:userId
+      const result = await getUserById({ id   });
       if (result.data.success) {
         setUser(result.data.user);
       } else {
@@ -49,11 +50,12 @@ const Balance = () => {
       if (isNaN(amount) || amount <= 0) {
         throw new Error('Please enter a valid amount.');
       }
-      if (amount < 50) {
-        throw new Error('Amount must be greater than ₹50.');
+      
+      if (amount > (user?.balance)) {
+        throw new Error('Insufficient balance.');
       }
-      if (amount > (user?.balance || 0)) {
-        throw new Error('Amount exceeds your available balance.');
+      if (amount < 200) {
+        throw new Error('Minimum withdraw ₹200.');
       }
       const res = await withdrawMoney({ userId: user._id, money: amount });
       if (res.data.success) {
@@ -63,7 +65,8 @@ const Balance = () => {
         toast.success('Withdrawal request submitted successfully.');
         setConfirmWithdrawal(false);
       } else {
-        throw new Error('Withdrawal request failed. Please try again.');
+        console.log(res)
+        throw new Error(res.data.error);
       }
     } catch (error) {
       toast.error(error.message);
@@ -81,7 +84,6 @@ const Balance = () => {
     setConfirmWithdrawal(false);
     setMoney('');
   };
-
   return (
     <div
       className="min-h-screen mt-20 flex flex-col items-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
@@ -349,26 +351,24 @@ const Balance = () => {
               </div>
               {user?.withdrawMoney?.length > 0 ? (
                 <div className="space-y-4 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-600 scrollbar-track-gray-700 pr-2">
-                  {user.withdrawMoney.map((transaction, idx) => (
+                  {user?.withdrawMoney?.map((transaction, idx) => (
                     <div
                       key={idx}
                       className="flex justify-between items-center border-b border-gray-600 py-4 
                       text-gray-300 hover:bg-gray-700 transition-colors duration-300 rounded-lg px-4 
                       animate-fade-in-up"
-                      data-aos="fade-up"
-                      data-aos-delay={`${100 * idx}`}
                     >
                       <div>
                         <p className="font-medium text-white">
                           Withdrawal #{transaction._id.slice(-6)}
                         </p>
                         <p className="text-sm text-gray-400">
-                          {new Date(transaction.createdAt).toLocaleDateString()}
+                          {new Date(transaction.withdrawDate).toLocaleDateString()}
                         </p>
                       </div>
                       <div className="text-right">
                         <p className="text-lg font-medium text-green-400">
-                          ₹{transaction?.amount?.toLocaleString()}
+                          ₹{transaction?.money?.toLocaleString()}
                         </p>
                         <p
                           className={`text-sm ${
@@ -379,7 +379,6 @@ const Balance = () => {
                               : 'text-red-400'
                           }`}
                         >
-                          {transaction?.status?.charAt(0)?.toUpperCase() + transaction?.status?.slice(1)}
                         </p>
                       </div>
                     </div>

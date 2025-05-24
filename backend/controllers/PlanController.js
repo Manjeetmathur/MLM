@@ -6,11 +6,14 @@ import PaymentScreenShot from "../model/paymentScreenShot.js";
 import Plan from "../model/plan.js";
 
 const investmentPackages = [
-       { id: "1", amount: 250, dailyIncome: 25 },
-       { id: "2", amount: 500, dailyIncome: 50 },
-       { id: "3", amount: 1000, dailyIncome: 100 },
-       { id: "4", amount: 2500, dailyIncome: 250 },
-       { id: "5", amount: 5000, dailyIncome: 500 },
+  { id: 1, amount: 500, dailyIncome: 50 },
+  { id: 2, amount: 1000, dailyIncome: 100 },
+  { id: 3, amount: 2500, dailyIncome: 250,  },
+  { id: 4, amount: 5000, dailyIncome: 500 },
+  { id: 5, amount: 8000, dailyIncome: 800 },
+  { id: 6, amount: 10000, dailyIncome: 1000 },
+  { id: 7, amount: 25000, dailyIncome: 2500 },
+  { id: 8, amount: 50000, dailyIncome: 5000 },
 ];
 
 // Add Investment Plan to User
@@ -54,15 +57,16 @@ export const uploadSst = async (req, res) => {
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
         <!-- Header -->
         <div style="background: linear-gradient(to right, #4f46e5, #7c3aed); padding: 20px; text-align: center;">
-          <div className="flex items-center space-x-2  rounded-lg shadow-"> 
-                      <img src={p1} alt="" className='w-[40px]  text-2xl rounded-lg ' />
-                      <h1 className="text-4xl md:text-5xl font-extrabold text-white transition-colors duration-300 drop-shadow-xl group-hover:text-yellow-300 ">
-                        Dream<span className="text-4xl md:text-5xl font-extrabold text-yellow-300 transition-colors duration-300 drop-shadow-xl group-hover:text-yellow-300 ">
-                          Pay
-                        </span>
-                      </h1>
-          
-                    </div>
+        <div className="flex items-center space-x-2  rounded-lg shadow-"> 
+                     <img src="https://i.postimg.cc/3J0QKbRh/IMG-20250524-020910.png" alt="" className='w-[40px]  text-2xl rounded-lg ' style=" width:70px; padding: 5px; text-align: center;" />
+                     <h1>
+                       Dream
+                       <span style="colour:yellow">
+                         Pay
+                       </span>
+                     </h1>
+         
+                   </div>
           
         </div>
         <!-- Body -->

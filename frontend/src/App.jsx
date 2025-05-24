@@ -18,6 +18,7 @@ import Profile from './pages/Admin/Profile';
 import { Toaster } from 'react-hot-toast'
 import StreakTracker from './pages/DeshBoardHelper/StreakTracker';
 import UserPlans from './pages/DeshBoardHelper/UserPlans';
+import ContactUs from './pages/ContactUs';
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -39,6 +40,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<ContactUs />} />
             <Route path="/balance/:id" element={<ProtectedRoute><Balance /></ProtectedRoute>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

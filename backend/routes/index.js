@@ -1,6 +1,6 @@
 import express from "express";
 import authMiddleware from "../middlewares/authmiddleware.js";
-import { deposit, getProfile, getReferrals, getUserbyId, levelIncome, login, logout, register, uploadPaymentScreenshot, withdraw, withdrawMoney } from "../controllers/usercontoller.js";
+import { deposit, getProfile, getReferrals, getUserbyId, levelIncome, login, logout, register,  withdrawMoney } from "../controllers/usercontoller.js";
 import { requestOTP, verifyOTP } from "../controllers/kycController.js";
 import { deleteUser, getAllUsers, getUserById, updateUser } from "../controllers/adminController.js";
 import { upload } from "../middlewares/multermiddleware.js";
@@ -19,7 +19,7 @@ router.post("/kyc/verify-otp", authMiddleware, verifyOTP);
 router.get("/referrals", authMiddleware, getReferrals);
 router.get("/profile", authMiddleware, getProfile);
 router.post("/deposit", authMiddleware, deposit);
-router.post("/withdraw", authMiddleware, withdraw);
+// router.post("/withdraw", authMiddleware, withdraw);
 
 
 router.get("/users", authMiddleware, getAllUsers); // View all users

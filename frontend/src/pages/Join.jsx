@@ -5,13 +5,15 @@ import { addPlan } from '../services/api';
 import toast from 'react-hot-toast';
 
 const packages = [
-  { id: 1, amount: 250, dailyIncome: 25 },
-  { id: 2, amount: 500, dailyIncome: 50 },
-  { id: 3, amount: 1000, dailyIncome: 100 },
-  { id: 4, amount: 2500, dailyIncome: 250 },
-  { id: 5, amount: 5000, dailyIncome: 500 },
+  { id: 1, amount: 500, dailyIncome: 50 },
+  { id: 2, amount: 1000, dailyIncome: 100 },
+  { id: 3, amount: 2500, dailyIncome: 250, featured: true },
+  { id: 4, amount: 5000, dailyIncome: 500 },
+  { id: 5, amount: 8000, dailyIncome: 800 },
+  { id: 6, amount: 10000, dailyIncome: 1000 },
+  { id: 7, amount: 25000, dailyIncome: 2500 },
+  { id: 8, amount: 50000, dailyIncome: 5000 },
 ];
-
 const Join = () => {
   const { user } = useSelector((s) => s.auth);
   const [image, setImage] = useState(null);
@@ -74,7 +76,6 @@ const Join = () => {
         setImagePreview(null);
         setConfirmUpload(false);
         toast.success('Screenshot uploaded successfully! Awaiting confirmation.');
-        console.log(res);
       } else {
         throw new Error('Failed to upload screenshot.');
       }
@@ -412,7 +413,7 @@ const Join = () => {
         </div>
 
         {/* Alternative Payment Instructions */}
-        <div
+        {/* <div
           className="mt-12 bg-gray-800 rounded-2xl shadow-xl p-6 sm:p-8 animate-fade-in-up"
           data-aos="fade-up"
           data-aos-delay="400"
@@ -437,7 +438,7 @@ const Join = () => {
               Include your User ID ({user._id.slice(-8)}) in the payment remarks.
             </p>
           </div>
-        </div>
+        </div> */}
 
         {/* FAQ Section */}
         <div

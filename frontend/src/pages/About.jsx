@@ -9,8 +9,7 @@ const About = () => {
     <div className="bg-gray-900 text-gray-200">
       {/* Hero Section */}
       <section
-        className="bg-gradient-to-r from-indigo-800 to-purple-900 text-white py-20 pt-36"
-        data-aos="fade-up"
+        className="bg-none text-white py-10 pt-36"
       >
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h1

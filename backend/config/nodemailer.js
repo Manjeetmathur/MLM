@@ -23,7 +23,6 @@ export const sendOTP = async ({email,subject,html}) => {
        };
        try {
              const l= await transporter.sendMail(mailOptions);
-             console.log(l)
        } catch (error) {
               console.log(error)
               console.error("❌ Error sending OTP:", error);

@@ -8,6 +8,8 @@ import F3 from './homeHelper/F3';
 import aos from 'aos';
 import 'aos/dist/aos.css';
 import WhoChoose from './homeHelper/WhoChoose';
+import ContactUs from './ContactUs';
+import About from './About';
 
 const Home = () => {
   const location = useLocation();
@@ -44,7 +46,7 @@ const Home = () => {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height + 10;
         this.size = Math.random() * 5 + 2;
-        this.speedX = Math.random() * 5 - 1;
+        this.speedX = Math.random() * 10 - 1;
         this.speedY = Math.random() * 5 - 1;
       }
 
@@ -358,7 +360,6 @@ const Home = () => {
         </section>
 
         <F3 />
-
         {/* Footer Call-to-Action */}
         <section className="py-20 bg-none">
           <div className="max-w-7xl mx-auto px-6 text-center">
@@ -386,7 +387,13 @@ const Home = () => {
               {isAuthenticated ? 'Go to Dashboard' : 'Join Now'}
             </Link>
           </div>
+          <div className="my-6">
+            <About/>
+          </div>
+<ContactUs/>
+
         </section>
+        
       </div>
 
 

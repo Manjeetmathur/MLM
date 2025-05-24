@@ -7,6 +7,7 @@ import InvestmentPackages from './homeHelper/InvestmentPage';
 import D1 from './DeshBoardHelper/D1';
 import D2 from './DeshBoardHelper/D2';
 import F1 from './homeHelper/F1';
+import Balance from './Balance';
 
 export default function Dashboard() {
   const location = useLocation();
@@ -47,7 +48,6 @@ export default function Dashboard() {
       setLevel(calculateLevel(response.data?.referrals?.length || 0));
       setProgress(calculateProgress(response.data?.referrals?.length || 0));
     } catch (err) {
-      console.error('Error fetching referrals:', err);
       if (err.response?.status === 401) {
         toast.error('Session expired. Please log in again.');
         navigate('/login');
@@ -278,6 +278,7 @@ export default function Dashboard() {
             >
               <F1 />
             </div>
+            <Balance userId={user?._id} />
           </>
         )}
       </div>
