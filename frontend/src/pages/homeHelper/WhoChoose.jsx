@@ -4,7 +4,7 @@ const WhoChoose = () => {
        return (
               <div>
                      {/* Why Choose Us Section */}
-                     <section className="py-20 bg-none">
+                     <section className="py-20 ">
                             
                             <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
                                    <h2
@@ -57,7 +57,7 @@ const WhoChoose = () => {
                                                  </p>
                                           </div>
                                           <div
-                                                 className="bg-gray-600  from-blue-500 via-pink-400 to-blue-500 p-6 rounded-lg shadow-md hover:shadow-lg 
+                                                 className="bg-none p-6 rounded-lg shadow-md hover:shadow-lg 
                     hover:shadow-indigo-500/30 transition-all duration-300"
                                                  data-aos="fade-up"
                                                  data-aos-delay="400"

@@ -115,7 +115,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 relative">
+    <div className="mt-20 min-h-screen flex flex-col items-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 relative">
       {/* Background dots */}
       <div className="absolute inset-0 pointer-events-none">
         {[...Array(15)].map((_, i) => (
