@@ -14,6 +14,7 @@ const Balance = ({ userId }) => {
   const [message, setMessage] = useState('');
   const [confirmWithdrawal, setConfirmWithdrawal] = useState(false);
   let { id } = useParams();
+  const [sum, setSum] = useState(0);
 
   const fetchUser = async () => {
     try {
@@ -35,6 +36,12 @@ const Balance = ({ userId }) => {
     }
   };
 
+  useEffect(() => {
+    if (user?.plans?.length) {
+      const totalIncome = user?.plans?.reduce((acc, plan) => acc + ((plan?.dailyIncome) * (plan?.dailyDeposit)), 0);
+      setSum(totalIncome);
+    }
+  }, [user]);
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
@@ -199,7 +206,13 @@ const Balance = ({ userId }) => {
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-400">Referral Income</p>
+                  <p className="text-gray-400">Packages Income</p>
+                  <p className="text-2xl font-bold text-green-400">
+                    ₹{sum?.toLocaleString()}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-400">Referral Inome</p>
                   <p className="text-2xl font-bold text-green-400">
                     ₹{(user?.referrals?.length * 50 || 0).toLocaleString()}
                   </p>
@@ -362,10 +375,10 @@ const Balance = ({ userId }) => {
                         </p>
                         <p
                           className={`text-sm ${transaction.status === 'pending'
-                              ? 'text-yellow-400'
-                              : transaction.status === 'approved'
-                                ? 'text-green-400'
-                                : 'text-red-400'
+                            ? 'text-yellow-400'
+                            : transaction.status === 'approved'
+                              ? 'text-green-400'
+                              : 'text-red-400'
                             }`}
                         >
                         </p>

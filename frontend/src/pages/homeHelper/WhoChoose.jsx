@@ -57,7 +57,7 @@ const WhoChoose = () => {
                                                  </p>
                                           </div>
                                           <div
-                                                 className="bg-none p-6 rounded-lg shadow-md hover:shadow-lg 
+                                                 className="bg-gray-600 p-6 rounded-lg shadow-md hover:shadow-lg 
                     hover:shadow-indigo-500/30 transition-all duration-300"
                                                  data-aos="fade-up"
                                                  data-aos-delay="400"

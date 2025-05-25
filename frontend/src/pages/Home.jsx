@@ -124,7 +124,7 @@ const Home = () => {
             mb-6 tracking-tight"
               data-aos="fade-down"
             >
-              Welcome to <span className="text-yellow-400">Dream Pay</span>
+              Welcome to Dream<span className="text-yellow-400">Pay</span>
             </h1>
             <p
               className="text-lg sm:text-xl md:text-2xl text-gray-200 font-medium 

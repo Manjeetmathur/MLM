@@ -4,7 +4,6 @@ import toast from 'react-hot-toast';
 
 const D2 = ({ profile, level, progress, referrals }) => {
   const [sum, setSum] = useState(0);
-  console.log(profile)
   let referralLink = window.location.href;
   referralLink =
     referralLink.split('').reverse().join('').slice(9).split('').reverse().join('') + 'register';
@@ -59,40 +58,44 @@ const D2 = ({ profile, level, progress, referrals }) => {
         </Link>
 
         {/* Package Income */}
-        <div
-          className="relative p-6 bg-gray-700 text-center rounded-2xl shadow-md 
+        <Link to={`/balance/${profile?._id}`}>
+          <div
+            className="relative p-6 bg-gray-700 text-center rounded-2xl shadow-md 
           hover:shadow-lg hover:shadow-indigo-400/50 transform hover:-translate-y-1 
           transition-all duration-300 animate-fade-in-up border border-indigo-600/50 group"
-          data-aos="fade-up"
-          data-aos-delay="100"
-        >
-          <h2 className="text-lg md:text-xl font-semibold text-gray-200 mb-2 flex items-center justify-center gap-2">
-            <span className="text-indigo-400">💰</span> Package Income
-          </h2>
-          <p className="text-2xl md:text-3xl font-bold text-green-400 group-hover:text-green-300 transition-colors duration-300">
-            ₹{sum.toLocaleString()}
-          </p>
-        </div>
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <h2 className="text-lg md:text-xl font-semibold text-gray-200 mb-2 flex items-center justify-center gap-2">
+              <span className="text-indigo-400">💰</span> Package Income
+            </h2>
+            <p className="text-2xl md:text-3xl font-bold text-green-400 group-hover:text-green-300 transition-colors duration-300">
+              ₹{sum.toLocaleString()}
+            </p>
+          </div>
+        </Link>
 
         {/* Referrals Income */}
-        <div
-          className="relative p-6 bg-gray-700 text-center rounded-2xl shadow-md 
+        <Link  to={`/balance/${profile?._id}`}>
+          <div
+            className="relative p-6 bg-gray-700 text-center rounded-2xl shadow-md 
           hover:shadow-lg hover:shadow-indigo-400/50 transform hover:-translate-y-1 
           transition-all duration-300 animate-fade-in-up border border-indigo-600/50 group"
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
-          <h2 className="text-lg md:text-xl font-semibold text-gray-200 mb-2 flex items-center justify-center gap-2">
-            <span className="text-indigo-400">💰</span> Referrals Income
-          </h2>
-          <Link
-            to="/balance"
-            className="text-xl md:text-2xl font-medium text-white hover:text-yellow-400 
-            transition-colors duration-300"
+            data-aos="fade-up"
+            data-aos-delay="200"
           >
-            ₹{(referrals?.referrals?.length * 50).toLocaleString()}
-          </Link>
-        </div>
+            <h2 className="text-lg md:text-xl font-semibold text-gray-200 mb-2 flex items-center justify-center gap-2">
+              <span className="text-indigo-400">💰</span> Referrals Income
+            </h2>
+            <Link
+              to="/balance"
+              className="text-xl md:text-2xl font-medium text-white hover:text-yellow-400 
+            transition-colors duration-300"
+            >
+              ₹{(referrals?.referrals?.length * 50).toLocaleString()}
+            </Link>
+          </div>
+        </Link>
 
         {/* Transactions */}
         <Link to={`/balance/${profile?._id}`}>
@@ -106,15 +109,14 @@ const D2 = ({ profile, level, progress, referrals }) => {
             <h2 className="text-lg md:text-xl font-semibold text-gray-200 mb-2 flex items-center justify-center gap-2">
               <span className="text-indigo-400">💰</span> Your Wallet
             </h2>
-            <Link
-              to={`/balance/${profile?._id}`}
+            <div
               className="inline-block bg-gradient-to-r from-indigo-800 to-purple-800 text-white 
             px-5 py-2 rounded-full hover:from-indigo-900 hover:to-purple-900 transition-all 
             duration-300 font-medium shadow-sm hover:shadow-md focus:outline-none focus:ring-4 
             focus:ring-indigo-400 focus:ring-offset-2"
             >
               See Your Wallet
-            </Link>
+            </div>
           </div>
         </Link>
 

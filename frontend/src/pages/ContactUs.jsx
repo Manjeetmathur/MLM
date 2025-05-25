@@ -194,9 +194,15 @@ const ContactUs = () => {
                                                                       d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                                                                />
                                                         </svg>
-                                                        <p>dreampay.help@gmail.com</p>
+                                                        <p>  Email:{' '}
+                                                               <a
+                                                                      href="mailto:support@dreampay.com"
+                                                                      className="hover:text-indigo-400 transition-colors duration-300"
+                                                               >
+                                                                      dreampay.help@gmail.com
+                                                               </a></p>
                                                  </div>
-                                               
+
                                                  <div className="flex items-center">
                                                         <svg
                                                                className="w-6 h-6 text-teal-400 mr-3"

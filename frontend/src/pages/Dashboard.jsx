@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getProfile, getReferrals, levelIncome } from '../services/api';
 import toast from 'react-hot-toast';
-import InvestmentPackages from './homeHelper/InvestmentPage';
 import D1 from './DeshBoardHelper/D1';
 import D2 from './DeshBoardHelper/D2';
 import F1 from './homeHelper/F1';
@@ -94,7 +93,6 @@ export default function Dashboard() {
     if (referralCount >= 5) return 60;
     return Math.min(referralCount * 10, 100);
   };
-console.log(user)
   return (
     <div className="min-h-screen bg-gray-900 mt-16 py-16 px-4 sm:px-8 lg:px-12 relative overflow-hidden">
       {/* Background decorative elements */}

@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+import pan from '../assets/pan.jpg';
+import tan from '../assets/tan.jpg';
+import registration from '../assets/Registration.jpg';
 const About = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
@@ -57,6 +59,7 @@ const About = () => {
           </div>
         </div>
       </section>
+
 
       {/* Mission Section */}
       <section className="py-16 bg-gradient-to-r from-gray-800 to-indigo-900">
@@ -159,6 +162,8 @@ const About = () => {
         </div>
       </section>
 
+    
+
       {/* Our Values Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-6">
@@ -216,7 +221,57 @@ const About = () => {
           </div>
         </div>
       </section>
+      {/* Certificate 1 */}
+      <div className="py-8">
+        <div className="max-w-7xl mx-auto px-6">
+          <div
+            className="bg-gray-800 p-6 rounded-xl shadow-md text-center"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <img
+              src={pan}
+              alt="Dream Pay Certificate of Excellence"
+              className="w-full max-w-xs sm:max-w-sm mx-auto rounded-lg border border-indigo-500/30 hover:shadow-indigo-500/50 transition-shadow duration-300"
+            />
+          </div>
+        </div>
+      </div>
 
+      {/* Certificate 2 */}
+      <div className="py-8">
+        <div className="max-w-7xl mx-auto px-6">
+          <div
+            className="bg-gray-800 p-6 rounded-xl shadow-md text-center"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <img
+              src={registration}
+              alt="Dream Pay Certificate of Trust"
+              className="w-full max-w-xs sm:max-w-sm mx-auto rounded-lg border border-indigo-500/30 hover:shadow-indigo-500/50 transition-shadow duration-300"
+            />
+            <p className="text-gray-400 text-sm mt-4">Registration Certificate</p>
+          </div>
+        </div>
+      </div>
+  {/* Certificate 3 */}
+      <div className="py-8">
+        <div className="max-w-7xl mx-auto px-6">
+          <div
+            className="bg-gray-800 p-6 rounded-xl shadow-md text-center"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <img
+              src={tan}
+              alt="Dream Pay Certificate of Innovation"
+              className="w-full max-w-xs sm:max-w-sm mx-auto rounded-lg border border-indigo-500/30 hover:shadow-indigo-500/50 transition-shadow duration-300"
+            />
+            <p className="text-gray-400 text-sm mt-4">Tan Certified</p>
+          </div>
+        </div>
+      </div>
       {/* Call-to-Action Section */}
       <section className="bg-gradient-to-r from-indigo-700 to-purple-800 text-white py-12">
         <div className="max-w-7xl mx-auto px-6 text-center" data-aos="fade-up">
