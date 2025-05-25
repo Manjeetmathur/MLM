@@ -13,8 +13,10 @@ export const requestOTP = async (req, res) => {
     user.otp = otp;
     user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes expiry
     user.AccountNo = AccountNo;
+    // user.AccountHolderName = AccountHolderName;
     user.ifscCode = ifscCode;
     await user.save();
+console.log(user)
 
     // OTP Email Content
     const otpEmailContent = `

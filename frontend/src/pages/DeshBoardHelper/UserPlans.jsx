@@ -132,7 +132,7 @@ const UserPlans = () => {
                 <p className="text-gray-300 mb-4 relative group">
                   🏦 Total Income:{' '}
                   <span className="text-indigo-400 font-medium">
-                    ₹{plan.totalIncome.toLocaleString()}
+                    ₹{plan?.totalIncome?.toLocaleString()}
                   </span>
                   <span
                     className="absolute hidden group-hover:block bg-gray-900 text-gray-300 

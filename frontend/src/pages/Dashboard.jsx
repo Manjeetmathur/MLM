@@ -94,7 +94,7 @@ export default function Dashboard() {
     if (referralCount >= 5) return 60;
     return Math.min(referralCount * 10, 100);
   };
-
+console.log(user)
   return (
     <div className="min-h-screen bg-gray-900 mt-16 py-16 px-4 sm:px-8 lg:px-12 relative overflow-hidden">
       {/* Background decorative elements */}
@@ -120,26 +120,26 @@ export default function Dashboard() {
 
       <div className="max-w-7xl mx-auto relative z-10 ">
         {/* Complete Task Popup */}
-       {!loading && user?.plans?.length && showTaskPopup && (
-  <div className="fixed bottom-4 right-4 bg-gray-900 text-white px-4 py-3 rounded-2xl w-[260px] border border-gray-700 shadow-2xl animate-fade-in z-50 transition-all duration-500">
-    <button
-      onClick={() => setShowTaskPopup(false)}
-      className="absolute top-2 right-2 text-gray-400 hover:text-gray-200 text-lg font-bold focus:outline-none"
-    >
-      ×
-    </button>
-    <p className="text-lg font-semibold mb-3">🔥 Complete your streak!</p>
-    <Link
-      to={`/plans`}
-      className="block text-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-2 px-4 
+        {!loading && user?.plans?.length && showTaskPopup && (
+          <div className="fixed bottom-4 right-4 bg-gray-900 text-white px-4 py-3 rounded-2xl w-[260px] border border-gray-700 shadow-2xl animate-fade-in z-50 transition-all duration-500">
+            <button
+              onClick={() => setShowTaskPopup(false)}
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-200 text-lg font-bold focus:outline-none"
+            >
+              ×
+            </button>
+            <p className="text-lg font-semibold mb-3">🔥 Complete your streak!</p>
+            <Link
+              to={`/plans`}
+              className="block text-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-2 px-4 
                  rounded-full hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 
                  font-semibold shadow-md hover:shadow-lg focus:outline-none focus:ring-2 
                  focus:ring-indigo-400 focus:ring-offset-2"
-    >
-      View Details
-    </Link>
-  </div>
-)}
+            >
+              View Details
+            </Link>
+          </div>
+        )}
 
         {loading ? (
           <div className="flex justify-center items-center min-h-[50vh]">

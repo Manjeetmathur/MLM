@@ -6,10 +6,10 @@ const Footer = () => {
               <footer className="bg-gray-800 text-gray-300 py-6">
                      <div
                             className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8"
-                            // 
+                     // 
                      >
                             {/* Company Info */}
-                            <div  data-aos-delay="100">
+                            <div data-aos-delay="100">
                                    <h3 className="text-xl font-semibold mb-4 text-yellow-400">Dream Pay</h3>
                                    <p className="text-gray-400 text-sm leading-relaxed">
                                           Empowering wealth creation through innovative MLM solutions. Join our community and start earning today.
@@ -17,7 +17,7 @@ const Footer = () => {
                             </div>
 
                             {/* Quick Links */}
-                            <div  data-aos-delay="200">
+                            <div data-aos-delay="200">
                                    <h3 className="text-xl font-semibold mb-4 text-yellow-400">Quick Links</h3>
                                    <ul className="space-y-2 text-sm">
                                           <li>
@@ -56,7 +56,7 @@ const Footer = () => {
                             </div>
 
                             {/* Contact Info */}
-                            <div  data-aos-delay="300">
+                            <div data-aos-delay="300">
                                    <h3 className="text-xl font-semibold mb-4 text-yellow-400">Contact Us</h3>
                                    <ul className="space-y-2 text-sm text-gray-400">
                                           <li>
@@ -68,13 +68,21 @@ const Footer = () => {
                                                         dreampay.help@gmail.com
                                                  </a>
                                           </li>
-                                          
-                                          <li>Address: A-1,SINDHI NIWAS,SITLADEVI TEMPLE ROAD, NEAR RANG UDYAN,MAHIM MUMBAI Mumbai City MH 400016 IN</li>
+
+                                          <li>Address: Floor No.: Ground Floor
+                                                 Building No./Flat No.: Shop No. 1 Plot No. 9
+                                                 Name Of Premises/Building: Krishna Sagar CHS Road/Street: Sector- 26 Phase-2
+                                                 Nearby Landmark: Dr Vivek Rathod Road
+                                                 Locality/Sub Locality: Taloja Pachanand
+                                                 City/Town/Village: Navi Mumbai
+                                                 District: Raigad
+                                                 State: Maharashtra
+                                                 PIN Code: 410208</li>
                                    </ul>
                             </div>
 
                             {/* Social Media / Newsletter */}
-                            <div  data-aos-delay="400">
+                            <div data-aos-delay="400">
                                    <h3 className="text-xl font-semibold mb-4 text-yellow-400">Stay Connected</h3>
                                    <div className="flex space-x-4 mb-4">
                                           <a
@@ -108,17 +116,17 @@ const Footer = () => {
                                                  </svg>
                                           </a>
                                    </div>
-                                  
+
                             </div>
                      </div>
 
                      {/* Copyright */}
                      <div
                             className="mt-8 border-t border-gray-600 pt-4 text-center text-gray-500 text-sm"
-                            
+
                             data-aos-delay="500"
                      >
-                            <p>© {new Date().getFullYear()} Dream Pay. All rights reserved.</p>
+                            <p>© 2024 Dream Pay. All rights reserved.</p>
                      </div>
               </footer>
        );

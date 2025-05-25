@@ -4,7 +4,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import { getUserById, withdrawMoney } from '../services/api';
 import toast from 'react-hot-toast';
 
-const Balance = ({userId}) => {
+const Balance = ({ userId }) => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [money, setMoney] = useState('');
@@ -18,8 +18,8 @@ const Balance = ({userId}) => {
   const fetchUser = async () => {
     try {
       setLoading(true);
-      id= id?id:userId
-      const result = await getUserById({ id   });
+      id = id ? id : userId
+      const result = await getUserById({ id });
       if (result.data.success) {
         setUser(result.data.user);
       } else {
@@ -50,7 +50,7 @@ const Balance = ({userId}) => {
       if (isNaN(amount) || amount <= 0) {
         throw new Error('Please enter a valid amount.');
       }
-      
+
       if (amount > (user?.balance)) {
         throw new Error('Insufficient balance.');
       }
@@ -168,17 +168,16 @@ const Balance = ({userId}) => {
                 <div>
                   <p className="text-gray-400">KYC Status</p>
                   <p
-                    className={`text-lg font-medium ${
-                      user?.kycVerified ? 'text-green-400' : 'text-red-400'
-                    }`}
+                    className={`text-lg font-medium ${user?.kycVerified ? 'text-green-400' : 'text-red-400'
+                      }`}
                   >
                     {user?.kycVerified ? 'Verified' : 'Not Verified'}
                   </p>
                 </div>
                 <div>
                   <p className="text-gray-400">Total Withdrawals</p>
-                  <p className="text-lg font-medium text-white">
-                    ₹{user?.withdrawMoney?.reduce((sum, w) => sum + w.amount, 0).toLocaleString() || '0'}
+                  <p className="text-2xl font-extrabold font-mono text-green-600">
+                    ₹{user?.withdrawMoney?.reduce((sum, w) => sum + w.money, 0) || '0'}
                   </p>
                 </div>
               </div>
@@ -205,12 +204,6 @@ const Balance = ({userId}) => {
                     ₹{(user?.referrals?.length * 50 || 0).toLocaleString()}
                   </p>
                 </div>
-                <div>
-                  <p className="text-gray-400">Package Income</p>
-                  <p className="text-2xl font-bold text-green-400">
-                    ₹{user?.plans?.reduce((sum, plan) => sum + (plan.dailyIncome || 0), 0).toLocaleString() || '0'}
-                  </p>
-                </div>
               </div>
             </div>
 
@@ -229,11 +222,10 @@ const Balance = ({userId}) => {
                   onChange={(e) => setMoney(e.target.value)}
                   className={`w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 
                   focus:border-transparent transition-all duration-200 bg-gray-700 text-gray-200 
-                  placeholder-gray-400 hover:bg-gray-600 ${
-                    money && (Number(money) < 50 || Number(money) > (user?.balance || 0))
+                  placeholder-gray-400 hover:bg-gray-600 ${money && (Number(money) < 50 || Number(money) > (user?.balance || 0))
                       ? 'border-red-500'
                       : 'border-gray-600'
-                  }`}
+                    }`}
                   placeholder="Enter amount for withdrawal (min ₹50)"
                   disabled={requestLoading}
                   min="0"
@@ -247,9 +239,8 @@ const Balance = ({userId}) => {
                     className={`flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 
                     rounded-full focus:outline-none focus:ring-4 focus:ring-green-400 focus:ring-offset-2 
                     transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform 
-                    hover:-translate-y-1 flex items-center justify-center ${
-                      requestLoading ? 'opacity-75 cursor-not-allowed' : 'hover:from-green-600 hover:to-green-700'
-                    }`}
+                    hover:-translate-y-1 flex items-center justify-center ${requestLoading ? 'opacity-75 cursor-not-allowed' : 'hover:from-green-600 hover:to-green-700'
+                      }`}
                     disabled={requestLoading}
                   >
                     {requestLoading ? (
@@ -296,9 +287,8 @@ const Balance = ({userId}) => {
                   className={`w-full max-w-md bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-6 
                   rounded-full focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-offset-2 
                   transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform 
-                  hover:-translate-y-1 flex items-center justify-center ${
-                    requestLoading || !money ? 'opacity-75 cursor-not-allowed' : 'hover:from-indigo-700 hover:to-purple-700'
-                  }`}
+                  hover:-translate-y-1 flex items-center justify-center ${requestLoading || !money ? 'opacity-75 cursor-not-allowed' : 'hover:from-indigo-700 hover:to-purple-700'
+                    }`}
                   disabled={requestLoading || !money}
                 >
                   Request Withdrawal
@@ -371,13 +361,12 @@ const Balance = ({userId}) => {
                           ₹{transaction?.money?.toLocaleString()}
                         </p>
                         <p
-                          className={`text-sm ${
-                            transaction.status === 'pending'
+                          className={`text-sm ${transaction.status === 'pending'
                               ? 'text-yellow-400'
                               : transaction.status === 'approved'
-                              ? 'text-green-400'
-                              : 'text-red-400'
-                          }`}
+                                ? 'text-green-400'
+                                : 'text-red-400'
+                            }`}
                         >
                         </p>
                       </div>
