@@ -18,10 +18,6 @@ const F1 = () => {
        const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
        const handleJoinClick = (pkgId) => {
-              if (!isAuthenticated) {
-                     toast.error('Please log in to join a plan');
-                     return '/login';
-              }
               return `/join/${pkgId}`;
        };
 

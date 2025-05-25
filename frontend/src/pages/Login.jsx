@@ -225,13 +225,13 @@ export default function Login() {
               </button>
             </div>
             <div className="flex justify-between items-center mb-6">
-              <Link
+              {/* <Link
                 to="/forgot-password"
                 className="text-indigo-400 hover:text-indigo-300 text-sm font-medium 
                 transition-colors duration-200"
               >
                 Forgot Password?
-              </Link>
+              </Link> */}
               <p className="text-gray-400 text-sm">
                 Don't have an account?{' '}
                 <Link
