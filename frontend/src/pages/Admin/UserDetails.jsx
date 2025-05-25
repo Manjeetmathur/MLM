@@ -88,6 +88,7 @@ const UserDetails = () => {
               try {
                      setVerifyLoading(true);
                      const res = await VerifySst({ userId, packageId, sstId });
+                     console.log(res)
                      if (res.data.success) {
                             toast.success("Verified");
                             setPkgId("");
@@ -97,6 +98,7 @@ const UserDetails = () => {
                             toast.error(res.data.message);
                      }
               } catch (error) {
+                     console.log()
                      toast.error(error.response?.data?.message || "Verification failed");
               } finally {
                      setVerifyLoading(false);

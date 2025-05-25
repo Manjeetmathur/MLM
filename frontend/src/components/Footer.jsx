@@ -65,19 +65,11 @@ const Footer = () => {
                                                         href="mailto:support@dreampay.com"
                                                         className="hover:text-indigo-400 transition-colors duration-300"
                                                  >
-                                                        support@dreampay.com
+                                                        dreampay.help@gmail.com
                                                  </a>
                                           </li>
-                                          <li>
-                                                 Phone:{' '}
-                                                 <a
-                                                        href="tel:+1234567890"
-                                                        className="hover:text-indigo-400 transition-colors duration-300"
-                                                 >
-                                                        +1 (234) 567-890
-                                                 </a>
-                                          </li>
-                                          <li>Address: 123 Dream St, Prosperity City, USA</li>
+                                          
+                                          <li>Address: A-1,SINDHI NIWAS,SITLADEVI TEMPLE ROAD, NEAR RANG UDYAN,MAHIM MUMBAI Mumbai City MH 400016 IN</li>
                                    </ul>
                             </div>
 
@@ -116,22 +108,7 @@ const Footer = () => {
                                                  </svg>
                                           </a>
                                    </div>
-                                   <p className="text-gray-400 text-sm mb-2">Subscribe to our newsletter:</p>
-                                   <div className="space-y-2">
-                                          <input
-                                                 type="email"
-                                                 placeholder="Enter your email"
-                                                 className="w-full p-2 rounded-lg border border-gray-600 bg-gray-700 text-gray-200 
-              focus:ring-indigo-400 focus:border-indigo-400 focus:outline-none"
-                                          />
-                                          <button
-                                                 className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 
-              transition-colors duration-300 focus:outline-none focus:ring-2 
-              focus:ring-indigo-400 focus:ring-offset-2 shadow-md"
-                                          >
-                                                 Subscribe
-                                          </button>
-                                   </div>
+                                  
                             </div>
                      </div>
 

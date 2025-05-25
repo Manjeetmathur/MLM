@@ -8,10 +8,11 @@ import D1 from './DeshBoardHelper/D1';
 import D2 from './DeshBoardHelper/D2';
 import F1 from './homeHelper/F1';
 import Balance from './Balance';
+import D3 from './DeshBoardHelper/D3';
 
 export default function Dashboard() {
   const location = useLocation();
-  
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location.pathname]);
@@ -25,6 +26,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
+  const [showTaskPopup, setShowTaskPopup] = useState(true);
 
   const getUserProfile = async () => {
     try {
@@ -116,7 +118,29 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10 ">
+        {/* Complete Task Popup */}
+       {!loading && user?.plans?.length && showTaskPopup && (
+  <div className="fixed bottom-4 right-4 bg-gray-900 text-white px-4 py-3 rounded-2xl w-[260px] border border-gray-700 shadow-2xl animate-fade-in z-50 transition-all duration-500">
+    <button
+      onClick={() => setShowTaskPopup(false)}
+      className="absolute top-2 right-2 text-gray-400 hover:text-gray-200 text-lg font-bold focus:outline-none"
+    >
+      ×
+    </button>
+    <p className="text-lg font-semibold mb-3">🔥 Complete your streak!</p>
+    <Link
+      to={`/plans`}
+      className="block text-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-2 px-4 
+                 rounded-full hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 
+                 font-semibold shadow-md hover:shadow-lg focus:outline-none focus:ring-2 
+                 focus:ring-indigo-400 focus:ring-offset-2"
+    >
+      View Details
+    </Link>
+  </div>
+)}
+
         {loading ? (
           <div className="flex justify-center items-center min-h-[50vh]">
             <div className="flex items-center space-x-3 animate-fade-in-up">
@@ -173,7 +197,7 @@ export default function Dashboard() {
                       <div
                         key={idx}
                         className="border border-gray-600 rounded-2xl p-6 bg-gray-700 shadow-sm 
-                        hover:shadow-md transition-all duration-300 transform hover:- wanneer translate-y-1 flex flex-col items-center"
+                        hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 flex flex-col items-center"
                       >
                         <p className="text-lg font-medium text-gray-300 mb-2">
                           Package Amount:{' '}
@@ -190,7 +214,7 @@ export default function Dashboard() {
                           font-medium shadow-sm hover:shadow-md focus:outline-none focus:ring-4 
                           focus:ring-indigo-400 focus:ring-offset-2"
                         >
-                          See Details
+                          Go for Streak
                         </Link>
                       </div>
                     ))}
@@ -271,6 +295,7 @@ export default function Dashboard() {
 
             {/* Investment Packages */}
             <div
+              id="packages"
               className="my-16 rounded-3xl animate-fade-in-up"
               style={{ animationDelay: '0.6s' }}
               data-aos="fade-up"
@@ -305,6 +330,16 @@ export default function Dashboard() {
             transform: translateY(0);
           }
         }
+        @keyframes fadeInRight {
+          from {
+            opacity: 0;
+            transform: translateX(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
         @keyframes pulseSlow {
           0%, 100% {
             transform: scale(1);
@@ -333,6 +368,9 @@ export default function Dashboard() {
         }
         .animate-fade-in-up {
           animation: fadeInUp 0.8s ease-out;
+        }
+        .animate-fade-in-right {
+          animation: fadeInRight 0.8s ease-out;
         }
         .animate-pulse-slow {
           animation: pulseSlow 8s ease-in-out infinite;

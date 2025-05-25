@@ -3,22 +3,21 @@ import { sendOTP } from "../config/nodemailer.js";
 import crypto from "crypto";
 
 export const requestOTP = async (req, res) => {
-       const { AccountNo, AccountHolderName, email, ifscCode } = req.body;
-       try {
-              let user = await User.findOne({ email });
-              if (!user) throw new Error("User not found");
-              if (user.kycVerified) throw new Error("KYC already verified");
+  const { AccountNo, AccountHolderName, email, ifscCode } = req.body;
+  try {
+    let user = await User.findOne({ email });
+    if (!user) throw new Error("User not found");
+    if (user.kycVerified) throw new Error("KYC already verified");
 
-              const otp = crypto.randomInt(100000, 999999).toString();
-              user.otp = otp;
-              user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes expiry
-              user.AccountNo = AccountNo;
-              user.AccountHolderName = AccountHolderName;
-              user.ifscCode = ifscCode;
-              await user.save();
+    const otp = crypto.randomInt(100000, 999999).toString();
+    user.otp = otp;
+    user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes expiry
+    user.AccountNo = AccountNo;
+    user.ifscCode = ifscCode;
+    await user.save();
 
-              // OTP Email Content
-              const otpEmailContent = `
+    // OTP Email Content
+    const otpEmailContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
         <!-- Header -->
         <div style="background: linear-gradient(to right, #4f46e5, #7c3aed); padding: 20px; text-align: center;">
@@ -64,31 +63,31 @@ export const requestOTP = async (req, res) => {
       </div>
     `;
 
-              await sendOTP({ email, subject: "Your OTP for KYC Verification", html: otpEmailContent });
+    await sendOTP({ email, subject: "Your OTP for KYC Verification", html: otpEmailContent });
 
-              res.json({ msg: "OTP sent to email", success: true });
-       } catch (error) {
-              res.json({ msg: error.message });
-       }
+    res.json({ msg: "OTP sent to email", success: true });
+  } catch (error) {
+    res.json({ msg: error.message });
+  }
 };
 
 export const verifyOTP = async (req, res) => {
-       const { email, otp } = req.body;
-       try {
-              const user = await User.findOne({ email });
-              if (!user) throw new Error("User not found");
+  const { email, otp } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) throw new Error("User not found");
 
-              if (user.otp !== otp || Date.now() > user.otpExpires) {
-                     throw new Error("Invalid or expired OTP");
-              }
+    if (user.otp !== otp || Date.now() > user.otpExpires) {
+      throw new Error("Invalid or expired OTP");
+    }
 
-              user.kycVerified = true;
-              user.otp = null;
-              user.otpExpires = null;
-              await user.save();
+    user.kycVerified = true;
+    user.otp = null;
+    user.otpExpires = null;
+    await user.save();
 
-              // Congratulatory Email Content
-              const congratsEmailContent = `
+    // Congratulatory Email Content
+    const congratsEmailContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
         <!-- Header -->
         <div style="background: linear-gradient(to right, #4f46e5, #7c3aed); padding: 20px; text-align: center;">
@@ -134,10 +133,10 @@ export const verifyOTP = async (req, res) => {
       </div>
     `;
 
-              await sendOTP({ email, subject: "KYC Verification Successful", html: congratsEmailContent });
+    await sendOTP({ email, subject: "KYC Verification Successful", html: congratsEmailContent });
 
-              res.json({ msg: "KYC verification successful", success: true });
-       } catch (error) {
-              res.json({ msg: error.message });
-       }
+    res.json({ msg: "KYC verification successful", success: true });
+  } catch (error) {
+    res.json({ msg: error.message });
+  }
 };

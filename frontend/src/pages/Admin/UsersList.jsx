@@ -12,11 +12,13 @@ const UsersList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortConfig, setSortConfig] = useState({ key: "name", direction: "asc" });
   const navigate = useNavigate();
-  const { user } = useSelector((st) => st.auth); // Assume auth store has user
+  const { user,isAdmin } = useSelector((st) => st.auth); // Assume auth store has user
   const usersPerPage = 10;
 
   useEffect(() => {
-   
+   if(!isAdmin){
+    navigate("/")
+   }
 
     fetchUsers();
     return () => {
@@ -200,7 +202,7 @@ const UsersList = () => {
               setSearch(e.target.value);
               setCurrentPage(1); // Reset to first page on search
             }}
-            className="flex-1 p-3 bg-gray-700 text-gray-200 rounded-lg border border-gray-600 
+            className="flex-1 p-3 bg-gray-700 text-gray-200 rounded-lg border-y border-gray-600 
             focus:ring-indigo-400 focus:border-indigo-400 placeholder-gray-400 
             transition-all duration-300 hover:bg-gray-600"
           />
@@ -216,7 +218,7 @@ const UsersList = () => {
 
         {/* Table */}
         <div className="overflow-x-auto px-6 pb-6"  data-aos-delay="200">
-          <table className="w-full border-collapse">
+          <table className="w-full border-\">
             <thead>
               <tr className="bg-gray-700 text-gray-300">
                 {[
@@ -251,7 +253,7 @@ const UsersList = () => {
                 paginatedUsers.map((user) => (
                   <tr
                     key={user._id}
-                    className="border-t border-gray-600 hover:bg-gray-600 transition-colors"
+                    className="border-y hover:bg-gray-600 transition-colors"
                   >
                     <td className="p-3 whitespace-nowrap text-gray-200">{user.name || "N/A"}</td>
                     <td className="p-3 break-words max-w-xs text-gray-200">{user.email}</td>

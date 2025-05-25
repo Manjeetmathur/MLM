@@ -19,6 +19,7 @@ import { Toaster } from 'react-hot-toast'
 import StreakTracker from './pages/DeshBoardHelper/StreakTracker';
 import UserPlans from './pages/DeshBoardHelper/UserPlans';
 import ContactUs from './pages/ContactUs';
+import D3 from './pages/DeshBoardHelper/D3';
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -49,6 +50,7 @@ function App() {
             <Route path="/admin/users" element={<UsersList />} />
             <Route path="/invest" element={<InvestmentPackages />} />
             <Route path="/plans/:id" element={<UserPlans />} />
+            <Route path="/plans" element={<D3 />} />
             <Route path="/streak" element={<StreakTracker />} />
             <Route path="/join/:packageId" element={<Join />} />
             <Route path="/profile/:id" element={<Profile />} />

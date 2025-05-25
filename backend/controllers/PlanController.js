@@ -4,11 +4,12 @@ import { sendOTP } from "../config/nodemailer.js";
 import User from "../model/User.js";
 import PaymentScreenShot from "../model/paymentScreenShot.js";
 import Plan from "../model/plan.js";
+import { error } from "console";
 
 const investmentPackages = [
   { id: 1, amount: 500, dailyIncome: 50 },
   { id: 2, amount: 1000, dailyIncome: 100 },
-  { id: 3, amount: 2500, dailyIncome: 250,  },
+  { id: 3, amount: 2500, dailyIncome: 250, },
   { id: 4, amount: 5000, dailyIncome: 500 },
   { id: 5, amount: 8000, dailyIncome: 800 },
   { id: 6, amount: 10000, dailyIncome: 1000 },
@@ -18,42 +19,42 @@ const investmentPackages = [
 
 // Add Investment Plan to User
 export const uploadSst = async (req, res) => {
-       try {
-              const { userId, packageId } = req.body;
-              if (!userId || !packageId) {
-                     throw new Error("Package is unavailable");
-              }
-              const user = await User.findById(userId);
-              if (!user) {
-                     throw new Error("User not found");
-              }
+  try {
+    const { userId, packageId } = req.body;
+    if (!userId || !packageId) {
+      throw new Error("Package is unavailable");
+    }
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
 
-              if (!req.file) {
-                     throw new Error("Screenshot is not available uploaded");
-              }
+    if (!req.file) {
+      throw new Error("Screenshot is not available uploaded");
+    }
 
-              // Upload image to Cloudinary
-              const selectedPackage = investmentPackages.find((p) => p.id == packageId);
-              if (!selectedPackage) {
-                     return res.status(400).json({ msg: "Invalid package selected" });
-              }
-              const uploadResult = await uploadOnCloudinary(req.file.path);
-              if (!uploadResult || !uploadResult.secure_url) {
-                     throw new Error("Error uploading image");
-              }
+    // Upload image to Cloudinary
+    const selectedPackage = investmentPackages.find((p) => p.id == packageId);
+    if (!selectedPackage) {
+      return res.status(400).json({ msg: "Invalid package selected" });
+    }
+    const uploadResult = await uploadOnCloudinary(req.file.path);
+    if (!uploadResult || !uploadResult.secure_url) {
+      throw new Error("Error uploading image");
+    }
 
-              // Update user with the new payment details
-              const newSst = await PaymentScreenShot.create({
-                     imageUrl: uploadResult.secure_url,
-                     paymentDate: new Date(),
-                     money: selectedPackage.amount,
-                     owner: user._id,
-              });
-              user.paymentScreenshots.push(newSst);
-              await user.save();
+    // Update user with the new payment details
+    const newSst = await PaymentScreenShot.create({
+      imageUrl: uploadResult.secure_url,
+      paymentDate: new Date(),
+      money: selectedPackage.amount,
+      owner: user._id,
+    });
+    user.paymentScreenshots.push(newSst);
+    await user.save();
 
-              // Email content for user
-              const userEmailContent = `
+    // Email content for user
+    const userEmailContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
         <!-- Header -->
         <div style="background: linear-gradient(to right, #4f46e5, #7c3aed); padding: 20px; text-align: center;">
@@ -94,8 +95,8 @@ export const uploadSst = async (req, res) => {
       </div>
     `;
 
-              // Email content for admin
-              const adminEmailContent = `
+    // Email content for admin
+    const adminEmailContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
         <!-- Header -->
         <div style="background: linear-gradient(to right, #4f46e5, #7c3aed); padding: 20px; text-align: center;">
@@ -126,75 +127,74 @@ export const uploadSst = async (req, res) => {
       </div>
     `;
 
-              await sendOTP({ email: user.email, subject: "Package Plan Purchased", html: userEmailContent });
-              await sendOTP({ email: 'manjeetkumar62054@gmail.com', subject: "Package Plan Purchased", html: adminEmailContent });
+    await sendOTP({ email: user.email, subject: "Package Plan Purchased", html: userEmailContent });
+    await sendOTP({ email: 'dreampay.help@gmail.com', subject: "Package Plan Purchased", html: adminEmailContent });
 
-              res.json({
-                     message: "Wait for few hours for verification",
-                     success: true,
-              });
-       } catch (error) {
-              res.json({ message: "Server Error", error: error.message });
-       }
+    res.json({
+      message: "Wait for few hours for verification",
+      success: true,
+    });
+  } catch (error) {
+    res.json({ message: "Server Error", error: error.message });
+  }
 };
 
 export const VerifySst = async (req, res) => {
-       try {
-              const { userId, packageId, sstId } = req.body;
-              const user = await User.findById(userId);
-              if (!userId || !packageId || !sstId) {
-                     throw new Error("packageId required");
-              }
-              if (!user) {
-                     return res.status(404).json({ msg: "User not found" });
-              }
-              const selectedPackage = investmentPackages.find((p) => p.id === packageId);
-              if (!selectedPackage) {
-                     return res.status(400).json({ msg: "Invalid package selected" });
-              }
+  try {
+    const { userId, packageId, sstId } = req.body;
+    console.log(userId)
+    const user = await User.findById(userId);
+    if (!userId || !packageId || !sstId) {
+      throw new Error("packageId required");
+    }
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    const selectedPackage = investmentPackages.find((p) => p.id == packageId);
+    if (!selectedPackage) {
+      throw new Error("Invalid package selected" );
+    }
 
-              // Update payment screenshot
-              const sst = await PaymentScreenShot.findById(sstId);
-              sst.verifiedPlan = true;
-              await sst.save();
+    // Update payment screenshot
+    const sst = await PaymentScreenShot.findById(sstId);
+    sst.verifiedPlan = true;
+    await sst.save();
+    // Referral Bonus & Level Update Logic
+    if (user.referredBy) {
+      const referrer = await User.findOne({ referralCode: user.referredBy });
 
-              // Referral Bonus & Level Update Logic
-              if (user.referredBy) {
-                     const referrer = await User.findOne({ referralCode: user.referredBy });
+      if (referrer) {
+        // Referral bonus (10% of package amount)
+        let referralAmount = selectedPackage.amount * 0.10;
+        referrer.balance += referralAmount;
+        referrer.referralBonus += referralAmount;
+        referrer.referrals += 1;
 
-                     if (referrer) {
-                            // Referral bonus (10% of package amount)
-                            let referralAmount = selectedPackage.amount * 0.10;
-                            referrer.balance += referralAmount;
-                            referrer.referralBonus += referralAmount;
-                            referrer.referrals += 1;
+        // Check if the referrer qualifies for the next level
+        let nextLevelTarget = 5 * Math.pow(2, referrer.level - 1); // 5, 10, 20, 40...
+        if (referrer.referrals >= nextLevelTarget) {
+          let levelBonus = referrer.referrals * 50; // 100% of referral earnings
+          referrer.balance += levelBonus;
+          referrer.referralBonus += levelBonus;
+          referrer.level += 1;
+        }
 
-                            // Check if the referrer qualifies for the next level
-                            let nextLevelTarget = 5 * Math.pow(2, referrer.level - 1); // 5, 10, 20, 40...
-                            if (referrer.referrals >= nextLevelTarget) {
-                                   let levelBonus = referrer.referrals * 50; // 100% of referral earnings
-                                   referrer.balance += levelBonus;
-                                   referrer.referralBonus += levelBonus;
-                                   referrer.level += 1;
-                            }
+        await referrer.save();
+      }
+    }
 
-                            await referrer.save();
-                     }
-              }
-
-              const plan = await Plan.create({
-                     packageAmount: selectedPackage.amount,
-                     dailyIncome: selectedPackage.dailyIncome,
-                     totalIncome: selectedPackage.dailyIncome * 24,
-                     createdAt: new Date(),
-                     owner: user._id,
-                     sstId: sst._id,
-              });
-              user.plans.push(plan);
-              await user.save();
-
-              // Email content for user and admin
-              const confirmationEmailContent = `
+    const plan = await Plan.create({
+      packageAmount: selectedPackage.amount,
+      dailyIncome: selectedPackage.dailyIncome,
+      totalIncome: selectedPackage.dailyIncome * 24,
+      createdAt: new Date(),
+      owner: user._id,
+      sstId: sst._id,
+    });
+    user.plans.push(plan);
+    await user.save();
+    // Email content for user and admin
+    const confirmationEmailContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
         <!-- Header -->
         <div style="background: linear-gradient(to right, #4f46e5, #7c3aed); padding: 20px; text-align: center;">
@@ -230,31 +230,31 @@ export const VerifySst = async (req, res) => {
       </div>
     `;
 
-              await sendOTP({ email: "manjeetkumar62054@gmail.com", text: confirmationEmailContent, subject: "Package Confirmation", html: confirmationEmailContent });
-              await sendOTP({ email: user.email, text: confirmationEmailContent, subject: "Package Confirmation", html: confirmationEmailContent });
+    await sendOTP({ email: "dreampay.help@gmail.com", text: confirmationEmailContent, subject: "Package Confirmation", html: confirmationEmailContent });
+    await sendOTP({ email: user.email, text: confirmationEmailContent, subject: "Package Confirmation", html: confirmationEmailContent });
 
-              res.status(201).json({
-                     message: "Plan added successfully",
-                     user,
-                     success: true,
-              });
-       } catch (error) {
-              res.json({
-                     message: error.message,
-              });
-       }
+    res.status(201).json({
+      message: "Plan added successfully",
+      user,
+      success: true,
+    });
+  } catch (error) {
+    res.json({
+      message: error.message,
+    });
+  }
 };
 
 export const getPlanById = async (req, res) => {
-       const planId = req.params.planId;
+  const planId = req.params.planId;
 
-       try {
-              const plan = await Plan.findById(planId);
-              if (!plan) {
-                     throw new Error("Your Plan is not valid");
-              }
-              res.json({ plan, success: true });
-       } catch (error) {
-              res.json({ message: error.message });
-       }
+  try {
+    const plan = await Plan.findById(planId);
+    if (!plan) {
+      throw new Error("Your Plan is not valid");
+    }
+    res.json({ plan, success: true });
+  } catch (error) {
+    res.json({ message: error.message });
+  }
 };

@@ -49,6 +49,7 @@ const RequestOTP = () => {
     try {
       setLoading(true);
       const response = await requestKYCOTP(formData);
+      console.log(response)
       if (response.data.success) {
         setSuccess(response.data.message);
         toast.success("Otp sent");

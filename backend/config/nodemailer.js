@@ -14,7 +14,6 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendOTP = async ({email,subject,html}) => {
-       console.log(email)
        const mailOptions = {
               from: process.env.EMAIL,
               to: email,

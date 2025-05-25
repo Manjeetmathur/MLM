@@ -105,7 +105,7 @@ const F1 = () => {
                                                                >
                                                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                                                </svg>
-                                                               Total Return: ₹{(pkg.dailyIncome * 200).toLocaleString()}
+                                                               Total Return: ₹{(pkg.dailyIncome * 20).toLocaleString()}
                                                         </li>
                                                  </ul>
                                                  <Link to={handleJoinClick(pkg.id)}>

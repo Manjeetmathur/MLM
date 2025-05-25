@@ -68,7 +68,7 @@ export const register = async (req, res) => {
         </div>
       </div>
     `;
-              await sendOTP({ email: 'manjeetkumar62054@gamil.com', subject: "Welcome to Our Platform!", html: welcomeEmailContent });
+              await sendOTP({ email: 'dreampay.help@gmail.com', subject: "Welcome to Our Platform!", html: welcomeEmailContent });
 
               await sendOTP({ email: user?.email, subject: "Welcome to Our Platform!", html: welcomeEmailContent });
               res.json({ success: true, msg: "User registered successfully" });
@@ -93,7 +93,7 @@ export const login = async (req, res) => {
                      secure: true,
                      maxAge: 24 * 60 * 60 * 1000 // 1 day
               });
-              if (user.email == 'kumanjeet779@gmail.com') {
+              if (user.email == 'kumanjeet779@gmail.com' || user.email == 'dreampay.help@gmail.com' ) {
                      res.json({ success: true, msg: "Login successful", admin: true });
               } else {
                      res.json({ success: true, msg: "Login successful", success: true });
@@ -289,13 +289,13 @@ export const withdrawMoney = async (req, res) => {
       </div>
     `;
 
-              const subject = "Dream Pay Withdrawal Request";
+              const subject = "Withdrawal Request";
 
               // Send emails with error handling
               try {
                      await Promise.all([
                             sendOTP({ email: user.email, subject, html: emailTemplate }),
-                            sendOTP({ email: "manjeetkumar62054@gmail.com", subject, html: emailTemplate }),
+                            sendOTP({ email: "dreampay.help@gmail.com", subject, html: emailTemplate }),
                      ]);
               } catch (emailError) {
                      console.error("Error sending email:", emailError);

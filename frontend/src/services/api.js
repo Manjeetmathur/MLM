@@ -1,6 +1,6 @@
 import axios from 'axios';
-const URL = "https://mlm-backend-8v8u.onrender.com/api"
-// let URL = "http://localhost:5555/api"
+// const URL = "https://mlm-backend-8v8u.onrender.com/api"
+let URL = "http://localhost:5555/api"
 
 const api = axios.create({
        baseURL: URL,
@@ -104,6 +104,7 @@ export const addPlan = async ({packageId,userId,image}) => {
 };
 export const VerifySst = async ({packageId,userId,sstId}) => {
        const response = await api.post(`/verify-sst`,{packageId,userId,sstId});
+       console.log(response)
        return response;
        
 };
